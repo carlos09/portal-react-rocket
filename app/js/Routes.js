@@ -8,6 +8,7 @@ import App                         from './App';
 import HomePage                    from './pages/HomePage';
 import SearchPage                  from './pages/SearchPage';
 import NotFoundPage                from './pages/NotFoundPage';
+import Payments                   from './pages/Payments';
 
 export default (
   <Router history={CreateBrowserHistory()}>
@@ -17,6 +18,7 @@ export default (
 
       <Route path="/" component={HomePage} />
       <Route path="/search" component={SearchPage} />
+      <Route path="/payments" component={Payments} />
 
       <Route path="*" component={NotFoundPage} />
 
