@@ -2,6 +2,7 @@
 
 import React         from 'react/addons';
 import {Link}        from 'react-router';
+import { Grid, Row, Col, Form } from 'react-bootstrap';
 import DocumentTitle from 'react-document-title';
 
 const SearchPage = React.createClass({

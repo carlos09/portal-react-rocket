@@ -6,6 +6,7 @@ import request        from 'superagent';
 const APIUtils = {
 
   root: '//localhost:3000/api/',
+  root2: 'http://dev.api.stationlocal.com/',
 
   normalizeResponse(response) {
     return camelizeKeys(response.body);
