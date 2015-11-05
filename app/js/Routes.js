@@ -12,6 +12,7 @@ import Payments                   from './components/Payments';
 import Dashboard                  from './components/Dashboard';
 import Assets                     from './components/Assets';
 import Login                     from './components/Login';
+import Users                     from './components/Users';
 
 export default (
   <Router history={CreateBrowserHistory()}>
@@ -25,6 +26,7 @@ export default (
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/assets" component={Assets} />
       <Route path="/login" component={Login} />
+      <Route path="/users" component={Users} />
 
       <Route path="*" component={NotFoundPage} />
 

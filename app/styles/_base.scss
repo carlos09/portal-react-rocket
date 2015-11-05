@@ -5,37 +5,78 @@ html,body { height: 100%; margin: 0px; padding: 0px; };
 body {
   padding: 0;
   font-family: "Roboto";
-  background-color: white;
+  background-color: $darkgrey;;
 
   div#sidebar {
     background-color: $darkgrey;
     color: white;
     height: 100vh;
-    padding-top: 20px;
+    padding-top: 0px;
+
+    .profile-welcome {
+      background-color: $darkgrey-hover;
+      padding: 20px 0 20px;
+
+      .st-logo {
+        height: 40px;
+      }
+
+      .avatar {
+        background-color: #66adac;
+        height: 80px;
+        width: 80px;
+        border-radius: 50px;
+        margin: 15px auto;
+      }
+
+      .welcome {
+        font-size: 16px;
+        font-weight: 100;
+        letter-spacing: 1px;
+      }
+    }
+
+    .container-fluid.nav {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
 
     #nav-list {
       list-style: outside none none;
       padding: 0;
-      margin-left: -15px;
-      margin-right: -30px;
+      //margin-left: -15px;
+      margin-right: -15px;
       margin-top: 20px;
 
       li {
+        position: relative;
         transition: all .15s linear;
         -webkit-transition: all .15s linear;
         -moz-transition: all .15s linear;
         -o-transition: all .15s linear;
 
         &:hover {
-          background-color: lighten($darkgrey, 5%);
+          background-color: $darkgrey-hover;
+
+          &:before {
+            content: "";
+            //border-left: 5px solid $orange;
+            position: absolute;
+            left: 0;
+            width: 5px;
+            background-color: $orange;
+            height: 101px;
+           }
         }
 
         a {
           color: lighten($grey-text, 10%);
           font-weight: 300;
           font-size: 16px;
-          padding: 10px 0 10px 20px;
+          letter-spacing: 1px;
+          padding: 25px 0;
           display: block;
+          position: relative;
           transition: all .15s linear;
           -webkit-transition: all .15s linear;
           -moz-transition: all .15s linear;
@@ -44,6 +85,23 @@ body {
           &:hover {
             color: white;
             text-decoration: none;
+
+            i {
+              color: $orange;
+            }
+          }
+
+          i {
+            display: block;
+            margin-bottom: 5px;
+            transition: all .15s linear;
+            -webkit-transition: all .15s linear;
+            -moz-transition: all .15s linear;
+            -o-transition: all .15s linear;
+          }
+
+          span {
+            display: block;
           }
         }
       }
@@ -52,30 +110,68 @@ body {
 
   div#portal-main {
     padding: 0;
-    height: 100vh;
+    height: 100%;
+    background-color: #f5f5f5;
   }
 
   header {
     background-color: transparent;
   }
 
+  section {
+
+    .section-heading {
+      margin-bottom: 25px;
+
+        h2.heading {
+          color: $orange;
+          font-size: 28px;
+          font-weight: 300;
+        }
+      }
+
+      .section-content {
+        padding: 25px 0;
+        border-bottom: 1px solid #d7d7d7;
+
+        &:last-child {
+          border-bottom: 0;
+        }
+
+        h3.title {
+          color: $orange;
+          font-size: 22px;
+          font-weight: 300;
+          line-height: 1.5;
+          margin-bottom: 15px;
+        }
+
+        p.desc {
+          color: $darkgrey-text;
+          font-size: 16px;
+          font-weight: 300;
+          line-height: 1.5;
+        }
+
+        p.note {
+          color: #959595;
+          font-size: 12px;
+          font-weight: 300;
+          line-height: 1.5;
+        }
+
+        p.extra-info {
+          color: $darkgrey-text;
+          font-size: 14px;
+          font-weight: 300;
+          line-height: 1.5;
+        }
+      }
+    }
+
   footer {
     background-color: transparent;
   }
-
-    .heading {
-      background-color: $darkgrey;
-      color: white;
-      padding: 15px 0;
-      margin: 0;
-
-      h2 {
-        font-size: 26px;
-        font-weight: 100;
-        margin: 0;
-
-      }
-    }
 }
 
 // Universal Station Css Classes
@@ -93,4 +189,29 @@ body {
   display: inline-block;
   vertical-align: middle;
   float: none;
+}
+
+.btn {
+  &.btn-st {
+    padding: 8px 25px;
+    font-size: 18px;
+    border-radius: 8px;
+    font-weight: 300;
+
+    &.orange {
+      background-color: $orange;
+      color: #fff;
+    }
+  }
+}
+
+.st-overlay {
+
+  &.light {
+    background-color: rgba(0,0,0, .8);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
 }

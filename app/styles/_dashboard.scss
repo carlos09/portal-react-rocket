@@ -34,11 +34,6 @@ section.assets {
     padding: 50px 0;
 
     .heading {
-      background-color: transparent;
-      color: $grey-text;
-      font-size: 24px;
-      font-weight: 300;
-      line-height: 1.5;
     }
 
     .upload-info {
@@ -56,19 +51,51 @@ section.assets {
     }
 
     #logo-upload {
-      color: $grey-text;
-      background-color: lighten($grey, 1%);
-      margin: 35px auto 0;
+      color: #d7d7d7;
       font-size: 20px;
       line-height: 1.25;
       font-weight: 300;
-      border-radius: 4px;
-      width: 80%;
+      background-color: #fff;
+      text-align: center;
+      border: 3px dashed #d7d7d7;
+      border-radius: 20px;
 
       .dropArea {
-        padding: 150px 0;
+        padding: 30px 0;
         cursor: pointer;
       }
+    }
+
+    .btn {
+
+      &.psd-dl {
+        background-color: #959595;
+        padding: 8px 25px;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 300;
+        font-size: 16px;
+      }
+
+      &.btn-st {
+        margin-top: 25px;
+      }
+    }
+
+    .color-pick {
+      position: relative;
+
+      .cp {
+        position: absolute;
+        bottom: 40px;
+        z-index: 2;
+      }
+    }
+
+    .color-hex {
+      font-size: 18px;
+      margin-left: 15px;
+      letter-spacing: 1px;
     }
   }
 }

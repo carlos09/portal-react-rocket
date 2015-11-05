@@ -12,15 +12,6 @@ const Dashboard = React.createClass({
     }
   },
   componentDidMount() {
-    $('#logo-dropzone').dropzone({
-      paramName: "filedz", // The name that will be used to transfer the file
-      maxFilesize: 6, // MB
-      dictDefaultMessage: '+ drag image here to upload',
-      accept: (file, done) => {
-        done();
-      }
-    });
-
     var obj = {
       meta: {
         "apiKey": "21922323610bcce1f91d8c272d71a4a7299aabef",

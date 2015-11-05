@@ -6,11 +6,16 @@ var COLOR = '#000000';
 
 const Assets = React.createClass ({
   getInitialState() {
-    return { isActive: false, logoColor: '' }
+    return {
+      isActive: false,
+      logoColor: '',
+      overlayState: false
+     }
   },
   handleCpBox() {
-    var active = !this.state.isActive;
-    this.setState({ isActive: active });
+    var active = !this.state.isActive,
+        overlayActive = !this.state.overlayState;
+    this.setState({ isActive: active, overlayState: overlayActive });
   },
   onDrop(files) {
     console.log('Received files: ', files);
@@ -19,12 +24,18 @@ const Assets = React.createClass ({
     COLOR = color
     this.setState({ logoColor: COLOR })
   },
+  overlayClick: function() {
+    //this.setState({ overlayState: !this.state.overlayState });
+    this.handleCpBox();
+  },
   render() {
     var dropzoneStyles = {
       border: "none"
     };
 
     var colorBoxState = this.state.isActive;
+
+    var overlayClass = this.state.overlayState === false ? 'hidden' : '';
 
     if( colorBoxState === true ){
       var CP = <ColorPicker value={COLOR} onDrag={this.onDrag} saturationWidth={200} saturationHeight={200} />;
@@ -36,36 +47,103 @@ const Assets = React.createClass ({
 
     return (
       <section className="assets">
-        <Row className="heading">
-          <div className='container-fluid'>
-            <Col sm={12}>
-              <h2><i className="material-icons">web</i> Assets</h2>
-            </Col>
-          </div>
-        </Row>
+        <div className={"st-overlay light " + overlayClass} onClick={ this.overlayClick }></div>
 
-
-        <div className="container-fluid asset-info text-center">
+        <div className="container-fluid asset-info">
           <Col sm={10} smOffset={1}>
-            <h3 className='heading'>Logo and Color</h3>
-            <p className='upload-info'>Please upload a image that is at minimum 1000 x 1000 pixels. We ask that you please submit a png with no background. We will use the color as your accent color throughout the app.</p>
-            <p className='upload-sub-info'>Please Note: Everytime this logo or color is updated, we will need to resubmit your app to their respective app stores.</p>
 
-            <div id="logo-upload">
-              <Dropzone onDrop={this.onDrop} style={dropzoneStyles}>
-                <div className="dropArea">Try dropping some files here, or click to select files to upload.</div>
-              </Dropzone>
-            </div>
-
-            <div className="container-fluid" className="color-picker-container">
-              <Col sm={2} smOffset={3} className="text-right vert-align-middle">
-                <div className="color-hex">{COLOR}</div>
+            <Row className="section-heading">
+              <Col sm={12}>
+                <h2 className="heading">First, select your branding for the App:</h2>
               </Col>
-              <Col sm={6} className="text-left vert-align-middle">
+            </Row>
+
+            <Row className="section-content">
+              <Col sm={5} className="vert-align-middle">
+                <h3 className="title">Logo</h3>
+
+                <p className="desc">Please upload a transparent PNG image that is 1000 x 1000 pixels.</p>
+              </Col>
+
+              <Col sm={5} smOffset={2} className="vert-align-middle">
+                <div id="logo-upload">
+                  <Dropzone onDrop={this.onDrop} style={dropzoneStyles}>
+                    <div className="dropArea">+ Drag file here to upload</div>
+                  </Dropzone>
+                </div>
+              </Col>
+            </Row>
+
+            <Row className="section-content">
+              <Col sm={5} className="vert-align-middle">
+                <h3 className="title">Accent Color</h3>
+
+                <p className="desc">We will use this color as your accent color throughout the Private Label app.</p>
+              </Col>
+
+              <Col sm={5} smOffset={2} className="vert-align-middle color-pick">
                 {CP}
-                <div style={{background: COLOR, width: 50, height: 50, color: 'white', cursor: 'pointer'}} onClick={this.handleCpBox}></div>
+                <div className="vert-align-middle" style={{background: COLOR, width: 40, height: 40, color: 'white', cursor: 'pointer', position: 'relative', zIndex: 2, display: 'inline-block'}} onClick={this.handleCpBox}></div>
+                <div className="color-hex vert-align-middle">{COLOR}</div>
               </Col>
-            </div>
+            </Row>
+
+            <Row className="section-content">
+              <Col sm={5} className="vert-align-middle">
+                <h3 className="title">App Icon</h3>
+
+                <p className="desc">Please upload an image that is a minimum of 1024 x 1024 pixels. This will be used as the app icon for your app, across all platforms.</p>
+              </Col>
+
+              <Col sm={5} smOffset={2} className="vert-align-middle">
+                <div id="logo-upload">
+                  <Dropzone onDrop={this.onDrop} style={dropzoneStyles}>
+                    <div className="dropArea">+ Drag file here to upload</div>
+                  </Dropzone>
+                </div>
+              </Col>
+            </Row>
+
+            <Row className="section-content">
+              <Col sm={5} className="vert-align-middle">
+                <h3 className="title">Background Image</h3>
+
+                <p className="desc">Please upload an image that is a minimum of 1300 x 2300 pixels. This will be used as the main  image for your app, across all platforms. </p>
+              </Col>
+
+              <Col sm={5} smOffset={2} className="vert-align-middle">
+                <div id="logo-upload">
+                  <Dropzone onDrop={this.onDrop} style={dropzoneStyles}>
+                    <div className="dropArea">+ Drag file here to upload</div>
+                  </Dropzone>
+                </div>
+              </Col>
+            </Row>
+
+            <Row className="section-content">
+              <Col sm={5} className="vert-align-middle">
+                <h3 className="title">Station PSD Template</h3>
+
+                <p className="desc">This should help you find a background image that works best for you.</p>
+                <p className="note">Made for Photoshop CC 2015.</p>
+              </Col>
+
+              <Col sm={5} smOffset={2} className="vert-align-middle">
+                <div className="btn psd-dl">Download PSD<i className="material-icons">file_download</i></div>
+              </Col>
+            </Row>
+
+            <Row className="section-content">
+              <Col sm={12} className="vert-align-middle">
+                <p className="desc">Please make sure these are the images and accent color you want. If you want to go back and change them after
+pressing continue we will have to resumbit your app the the app store.</p>
+
+                  <button className="btn btn-st orange">Continue</button>
+              </Col>
+            </Row>
+
+
+
 
           </Col>
         </div>
