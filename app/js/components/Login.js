@@ -7,6 +7,7 @@ import DocumentTitle    from 'react-document-title';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 import LoginActions     from '../actions/LoginActions';
 import LoginStore       from '../stores/LoginStore';
+//import StationLogo      from './stationlogo';
 
 var apiKey = "21922323610bcce1f91d8c272d71a4a7299aabef";
 
@@ -18,7 +19,7 @@ function getLogins(){
   }
 }
 
-var Login = React.createClass({
+class Login extends React.Component {
   mixins: [LoginStore.mixin],
   getInitialState() {
     return getLogins();
@@ -45,31 +46,46 @@ var Login = React.createClass({
       <DocumentTitle title="Station Login">
         <section className="login">
 
-          <Row>
-            <div className='container-fluid'>
-              <Col sm={6} smOffset={3} className="text-center">
-                <img id='station-logo' src='/imgs/logos/station/station-logo.svg' className="img-responsive" />
-                <h2 className='page-title'>Client Dashboard</h2>
+            <div className='container-fluid login-area'>
+              <Col sm={10} smOffset={1}>
 
-                <div id="login" className='st-initial-form'>
-                  <input type="text" name="username" ref='username' placeholder='Login' />
-                  <input type="password" name="password" ref='password' placeholder='Password' />
-                  <input type="hidden" name="token" ref="token" value={sessToken} />
+                <Row className="section-heading">
+                  <Col sm={12} className="text-center">
+                    <img className="st-logo" src="/images/logos/station-logo.png" />
+                    <h2 className="heading">Sign In</h2>
+                  </Col>
+                </Row>
 
-                  <a href="#" className='forgot-link'>Forgot Password</a>
-                  <div className='btn st-btn' onClick={this.loginAction}>Sign In</div>
+                <Row className="section-content">
+                  <Col sm={4} smOffset={4} className="text-center">
+                    <div id="login" className='st-initial-form'>
+                      <input type="text" name="username" ref='username' placeholder='username or email' />
+                      <input type="password" name="password" ref='password' placeholder='password' />
+                      <input type="hidden" name="token" ref="token" value={sessToken} />
 
-                </div>
+                      <div className='btn btn-st orange' onClick={this.loginAction}>Sign In</div>
+                      <a href="#" className='forgot-link'>Forgot Password</a>
 
-              </Col>
-            </div>
-          </Row>
+                    </div>
+                  </Col>
+                </Row>
 
+            </Col>
+          </div>
         </section>
       </DocumentTitle>
     );
   }
+}
 
-});
+@SidebarMixin
+export default class extends React.Component {
+  render() {
 
-module.exports = Login;
+    return (
+      <Container id='container'>
+        <Login />
+      </Container>
+    );
+  }
+}

@@ -5,12 +5,32 @@ section.users {
     .section-content {
       background-color: #fff;
       border-radius: 15px;
+      color: $darkgrey;
 
       &.info {
-        margin-bottom: 10px;
+        margin-bottom: 0px;
+        border-radius: 0;
 
         &:last-child {
           margin-bottom: 0;
+        }
+
+        &.heading {
+          background-color: $darkgrey;
+          border-radius: 15px 15px 0 0;
+          margin-bottom: 0;
+
+          span.title {
+            color: #fff;
+
+            i {
+              color: $orange;
+
+              &.fa {
+                font-size: 14px;
+              }
+            }
+          }
         }
       }
 
@@ -27,7 +47,9 @@ section.users {
       }
 
       &.addNew {
-        background-color: transparent;
+        background-color: #fff;
+        border-radius: 0 0 15px 15px;
+        padding: 15px 0;
 
         i.fa-plus {
           background-color: $orange;

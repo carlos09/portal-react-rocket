@@ -37,6 +37,7 @@ const App = React.createClass({
   },
 
   renderChildren() {
+    console.log('query: ', this.props.query);
     return React.cloneElement(this.props.children, {
       params: this.props.params,
       query: this.props.query,
@@ -45,10 +46,11 @@ const App = React.createClass({
   },
 
   render() {
+    console.log("children: ", this);
     return (
-      <div className="container-fluid">
+      <div className="container-fluid height-100">
 
-        <div className="row row-offcanvas row-offcanvas-left">
+        <div className="row row-offcanvas row-offcanvas-left height-100">
 
         <Sidebar />
 

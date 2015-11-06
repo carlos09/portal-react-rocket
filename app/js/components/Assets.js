@@ -1,5 +1,6 @@
 import React         from 'react/addons';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
+import DropzoneJs     from './DropzoneJs';
 var ColorPicker = require('react-color-picker');
 
 var COLOR = '#000000';
@@ -8,8 +9,11 @@ const Assets = React.createClass ({
   getInitialState() {
     return {
       isActive: false,
-      logoColor: '',
-      overlayState: false
+      overlayState: false,
+      accentColor: '#000000',
+      logoImgUrl: '',
+      iconImgUrl: '',
+      backgroundImgUrl: ''
      }
   },
   handleCpBox() {
@@ -22,11 +26,58 @@ const Assets = React.createClass ({
   },
   onDrag: function(color) {
     COLOR = color
-    this.setState({ logoColor: COLOR })
+    this.setState({ accentColor: COLOR })
   },
   overlayClick: function() {
     //this.setState({ overlayState: !this.state.overlayState });
     this.handleCpBox();
+  },
+  onAddLogoImg: function(res){
+    console.log('res: ', res);
+    var newFile = {
+      //id:uuid(),
+      name:res.file.name,
+      size: res.file.size,
+      altText:'',
+      caption: '',
+      file:res.file,
+      url:res.imageUrl
+    };
+    this.setState({
+      logoImgUrl: newFile.url
+    })
+    console.log('new file is: ', newFile);
+  },
+  onAddIconImg: function(res){
+    console.log('res: ', res);
+    var newFile = {
+      //id:uuid(),
+      name:res.file.name,
+      size: res.file.size,
+      altText:'',
+      caption: '',
+      file:res.file,
+      url:res.imageUrl
+    };
+    //this.executeAction(newImageAction, newFile);
+    this.setState({
+      iconImgUrl: newFile.url
+    })
+  },
+  onAddBgImg: function(res){
+    var newFile = {
+      //id:uuid(),
+      name:res.file.name,
+      size: res.file.size,
+      altText:'',
+      caption: '',
+      file:res.file,
+      url:res.imageUrl
+    };
+    //this.executeAction(newImageAction, newFile);
+    this.setState({
+      backgroundImgUrl: newFile.url
+    })
   },
   render() {
     var dropzoneStyles = {
@@ -35,7 +86,12 @@ const Assets = React.createClass ({
 
     var colorBoxState = this.state.isActive;
 
+console.log ('logo url state: ' + this.state.logoImgUrl);
+
     var overlayClass = this.state.overlayState === false ? 'hidden' : '';
+    var logoPreview = this.state.logoImgUrl === undefined ? 'hidden' : '';
+    var iconPreview = this.state.iconImgUrl === undefined ? 'hidden' : '';
+    var backgroundPreview = this.state.backgroundImgUrl === undefined ? 'hidden' : '';
 
     if( colorBoxState === true ){
       var CP = <ColorPicker value={COLOR} onDrag={this.onDrag} saturationWidth={200} saturationHeight={200} />;
@@ -67,9 +123,10 @@ const Assets = React.createClass ({
 
               <Col sm={5} smOffset={2} className="vert-align-middle">
                 <div id="logo-upload">
-                  <Dropzone onDrop={this.onDrop} style={dropzoneStyles}>
+                  <DropzoneJs onDrop={this.onAddLogoImg}>
                     <div className="dropArea">+ Drag file here to upload</div>
-                  </Dropzone>
+                     <img className={"upload-preview img-responsive " + logoPreview } ref="img" src={this.state.logoImgUrl} />
+                  </DropzoneJs>
                 </div>
               </Col>
             </Row>
@@ -97,9 +154,10 @@ const Assets = React.createClass ({
 
               <Col sm={5} smOffset={2} className="vert-align-middle">
                 <div id="logo-upload">
-                  <Dropzone onDrop={this.onDrop} style={dropzoneStyles}>
+                  <DropzoneJs onDrop={this.onAddIconImg}>
                     <div className="dropArea">+ Drag file here to upload</div>
-                  </Dropzone>
+                     <img className={"upload-preview img-responsive " + logoPreview }  ref="img" src={this.state.iconImgUrl} />
+                  </DropzoneJs>
                 </div>
               </Col>
             </Row>
@@ -113,9 +171,10 @@ const Assets = React.createClass ({
 
               <Col sm={5} smOffset={2} className="vert-align-middle">
                 <div id="logo-upload">
-                  <Dropzone onDrop={this.onDrop} style={dropzoneStyles}>
+                  <DropzoneJs onDrop={this.onAddBgImg}>
                     <div className="dropArea">+ Drag file here to upload</div>
-                  </Dropzone>
+                     <img className={"upload-preview img-responsive " + backgroundPreview }  ref="img" src={this.state.backgroundImgUrl} />
+                  </DropzoneJs>
                 </div>
               </Col>
             </Row>
@@ -138,7 +197,7 @@ const Assets = React.createClass ({
                 <p className="desc">Please make sure these are the images and accent color you want. If you want to go back and change them after
 pressing continue we will have to resumbit your app the the app store.</p>
 
-                  <button className="btn btn-st orange">Continue</button>
+                  <button className="btn btn-st orange">Continue <i className="fa fa-angle-double-right"></i></button>
               </Col>
             </Row>
 

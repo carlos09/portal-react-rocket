@@ -5,7 +5,7 @@ import {Link}        from 'react-router';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 const Sidebar = React.createClass({
-
+  displayName: 'SidebarMixin',
   render() {
     return (
       <div id="sidebar" role="navigation" className="col-sm-3 col-md-2 sidebar-offcanvas">

@@ -1,0 +1,64 @@
+section.login {
+  background-image: url('../images/mountainbg.jpg');
+  background-size: cover;
+  height: 100%;
+
+  .login-area {
+    position: relative;
+  top: 50%;
+  transform: translateY(-55%);
+
+    .section-heading {
+      margin-bottom: 0;
+
+      h2.heading {
+        color: #fff;
+        margin: 50px 0 25px;
+      }
+    }
+
+    .section-content {
+      padding-top: 0;
+
+      #login {
+
+        input {
+          text-align: center;
+          background-color: transparent;
+          border: none;
+          border-top: 1px solid #fff;
+          border-bottom: 1px solid #fff;
+          margin-top: -1px;
+          display: block;
+          width: 100%;
+          padding: 15px 0;
+          font-size: 18px;
+          font-weight: 300;
+          color: #fff;
+
+          &:focus {
+            outline: 0;
+          }
+
+          &:first-child {
+            border-top: none;
+          }
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+
+        .btn {
+          display: block;
+          margin: 20px 0 20px;
+        }
+
+        a.forgot-link {
+          color: #fff;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+}
