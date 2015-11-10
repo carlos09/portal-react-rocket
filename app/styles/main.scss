@@ -1,6 +1,11 @@
 @import 'vars';
 @import 'typography';
 @import 'base';
-
+@import 'animate';
 @import 'elements/header';
 @import 'elements/footer';
+
+@import 'login';
+@import 'dashboard';
+@import 'users';
+@import 'affiliates';

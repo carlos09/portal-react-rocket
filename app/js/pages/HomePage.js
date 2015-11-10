@@ -22,6 +22,7 @@ const HomePage = React.createClass({
           <div>
             <Link to="/search">Search</Link>
             <Link to="/payments">Payments</Link>
+            <Link to="/dashboard">Dashboard</Link>
           </div>
 
         </section>

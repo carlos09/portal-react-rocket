@@ -1,0 +1,186 @@
+section.dashboard {
+
+  .stations-list {
+
+    div.station-view {
+      padding: 10px 0;
+
+      &:nth-child(odd) {
+        background-color: $grey;
+      }
+
+      h4 {
+        font-weight: 300;
+        color: $darkgrey-text;
+        margin: 0;
+        font-size: 22px;
+      }
+
+      p.listen {
+        color: $grey-text;
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .edit-link {
+        color: $orange;
+      }
+    }
+  }
+}
+
+section.assets {
+  .asset-info {
+    padding: 50px 0;
+
+    .heading {
+    }
+
+    .upload-info {
+      color: $darkgrey-text;
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 300;
+      margin-bottom: 5px;
+    }
+
+    .upload-sub-info {
+      font-size: 12px;
+      color: $grey-text;
+      font-weight: 300;
+    }
+
+    #logo-upload {
+      color: #d7d7d7;
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 300;
+      background-color: #fff;
+      text-align: center;
+      border: 3px dashed #d7d7d7;
+      border-radius: 20px;
+      padding: 30px;
+      -webkit-transition: all .15s linear;
+      -moz-transition: all .15s linear;
+      -o-transition: all .15s linear;
+
+      &:hover {
+        background-color: rgba($grey, .2);
+        cursor: pointer;
+        color: darken(#d7d7d7, 5%);
+        border-color: darken(#d7d7d7, 5%);
+      }
+
+      .upload-preview {
+        margin-top: 20px;
+      }
+    }
+
+    .btn {
+
+      &.psd-dl {
+        background-color: #959595;
+        padding: 8px 25px;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 300;
+        font-size: 16px;
+      }
+
+      &.btn-st {
+        margin-top: 25px;
+      }
+    }
+
+    .color-pick {
+      position: relative;
+
+      .cp {
+        position: absolute;
+        bottom: 40px;
+        z-index: 2;
+      }
+    }
+
+    .color-hex {
+      font-size: 18px;
+      margin-left: 15px;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+
+.color-picker-container {
+  position: relative;
+  margin-top: 35px;
+
+  .cp {
+    position: absolute;
+    top: -205px;
+    left: 15px;
+  }
+
+  .color-hex {
+    color: $grey-text;
+    font-size: 20px;
+  }
+}
+
+.color-picker,
+.color-picker *,
+.cp-saturation-spectrum,
+.cp-saturation-spectrum *,
+.cp-hue-spectrum,
+.cp-hue-spectrum * {
+  box-sizing: border-box;
+}
+.cp-saturation-spectrum,
+.cp-hue-spectrum {
+  position: relative;
+  display: inline-block;
+}
+.cp-saturation-white,
+.cp-saturation-black {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.cp-saturation-white {
+  background: linear-gradient(to right, #fff, rgba(204,154,129,0));
+}
+.cp-saturation-black {
+  background: linear-gradient(to top, #000, rgba(204,154,129,0));
+}
+.cp-saturation-spectrum {
+  cursor: pointer;
+
+}
+.cp-saturation-spectrum .cp-saturation-drag {
+  display: none;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.cp-saturation-spectrum .cp-saturation-drag .inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #000;
+  border-radius: 10px;
+}
+.cp-hue-spectrum {
+  background: linear-gradient(to bottom, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+  cursor: pointer;
+
+}
+.cp-hue-spectrum .cp-hue-drag {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  border: 1px solid #000;
+}
