@@ -11,8 +11,9 @@ import NotFoundPage                from './pages/NotFoundPage';
 import Payments                   from './components/Payments';
 import Dashboard                  from './components/Dashboard';
 import Assets                     from './components/Assets';
-import Login                     from './components/Login';
-import Users                     from './components/Users';
+import Login                      from './components/Login';
+import Users                      from './components/Users';
+import Affiliates                from './components/Affiliates';
 
 export default (
   <Router history={CreateBrowserHistory()}>
@@ -27,6 +28,7 @@ export default (
       <Route path="/assets" component={Assets} />
       <Route path="/login" component={Login} />
       <Route path="/users" component={Users} />
+      <Route path="/affiliates" component={Affiliates} />
 
       <Route path="*" component={NotFoundPage} />
 
