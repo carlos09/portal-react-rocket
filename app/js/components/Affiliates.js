@@ -2,6 +2,7 @@ import React         from 'react/addons';
 import ReactDOM         from 'react-dom';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 import McFly from 'McFly';
+import InlineEdit from 'react-edit-inline';
 
 /** McFly */
 
@@ -10,7 +11,12 @@ var Flux = new McFly();
 /** Store */
 
 var _affiliates = [];
-var _affList = [];
+var _affList = [{
+    index: 65655,
+    name: "Some Name",
+    username: "stranger",
+    email: "stranger@danger.com"
+}];
 
 function addTodo(text){
     _affiliates.push(text);
@@ -21,10 +27,25 @@ function cancelAff(key){
 }
 
 function saveAff(affObj){
+  console.log('the object is: ', affObj);
     _affList.push(affObj);
-    
+
     var affIndex = affObj.index;
     cancelAff(affIndex);
+}
+
+function updateAff(updatedObj){
+  var i = updatedObj.index;
+  var name = updatedObj.name;
+  console.log('updatedObj() ', updatedObj);
+  console.log('current list: ', _affList[i]);
+
+  _affList[i].push({name: name});
+
+    //_affList.set(updatedObj);
+    //
+    // var affIndex = affObj.index;
+    // cancelAff(affIndex);
 }
 
 var AffiliatesStore = Flux.createStore({
@@ -56,6 +77,14 @@ var AffiliatesStore = Flux.createStore({
       saveAff(affObj);
       AffiliatesStore.emitChange();
     }
+    if(payload.actionType === "UPDATE_AFFILIATE") {
+      var updatedObj = ({
+        index: payload.index,
+        name: payload.data
+      });
+      updateAff(updatedObj);
+      AffiliatesStore.emitChange();
+    }
 });
 
 /** Actions */
@@ -80,6 +109,16 @@ var AffiliatesActions = Flux.createActions({
         username: username,
         email: email,
         index: index
+      }
+    },
+    updateAff: function(index, data) {
+      console.log('updatedAff()', index);
+      console.log('updated data is: ', data.name);
+      var name = data.name;
+      return {
+        actionType: "UPDATE_AFFILIATE",
+        index: index,
+        data: name
       }
     }
 });
@@ -131,6 +170,15 @@ var AffiliateList = React.createClass({
 /** Component */
 
 var Todos = React.createClass({
+  getInitialState: function() {
+    return {
+      editState: false
+    }
+  },
+  editAffiliate: function() {
+    var active = !this.state.editState;
+    this.setState({ editState: active });
+  },
     addTodo: function(){
         AffiliatesActions.addTodo('test');
     },
@@ -138,15 +186,26 @@ var Todos = React.createClass({
       AffiliatesActions.cancelAff(num);
     },
     saveAff: function(index) {
+
+      console.log('passed index: ' + index);
       var name = ReactDOM.findDOMNode(this.refs.affname).value;
       var username = ReactDOM.findDOMNode(this.refs.affusername).value;
       var email = ReactDOM.findDOMNode(this.refs.affemail).value;
 
       AffiliatesActions.saveAff(name, username, email, index);
     },
-    render: function() {
+    dataChanged: function(index, data) {
+        console.log('some change: ', data.key);
+        console.log('data change index:', index);
 
-      console.log('props are: ', this.props);
+        AffiliatesActions.updateAff(index, data);
+    },
+    render: function() {
+      //console.log('props are: ', this.props);
+
+      console.log('state is: ', this.state);
+      var editClass = this.state.editState === false ? 'animated fadeOutUp hidden' : 'animated fadeInDown';
+      var editClassMain = this.state.editState === false ? '' : 'edit-aff';
 
     return (
       <section className="affiliates">
@@ -159,33 +218,67 @@ var Todos = React.createClass({
               </Col>
             </Row>
 
-            <Row className="section-content info">
-              <Col sm={11} className="vert-align-middle">
-                <span className="affiliate-name">Affiliate Name 1</span>
-              </Col>
-
-              <Col sm={1} className="vert-align-middle">
-                <i className="affiliate-showmore material-icons">keyboard_arrow_right</i>
-              </Col>
-            </Row>
-
             { this.props.list.map(function(list, index) {
-              console.log('list is: ', list);
-              return <div key={index}>
-                <Row className="section-content info">
-                <Col sm={11} className="vert-align-middle">
-                  <span className="affiliate-name">{list.name}</span>
-                </Col>
+              console.log('INDEX IS: ', index);
 
-                <Col sm={1} className="vert-align-middle">
-                  <i className="affiliate-showmore material-icons">keyboard_arrow_right</i>
-                </Col>
-              </Row>
+              return <div key={index}>
+                <Row className={"section-content info " + editClassMain}>
+                  <Col sm={11} className="vert-align-middle">
+                    <span className="affiliate-name">{list.name}</span>
+                    <span className="edit" onClick={this.editAffiliate.bind(this, index)}>edit</span>
+                  </Col>
+
+                  <Col sm={1} className="vert-align-middle">
+                    <i className="affiliate-showmore material-icons">keyboard_arrow_right</i>
+                  </Col>
+                </Row>
+                <Row className={"section-content details " + editClass}>
+                  <Col sm={4}>
+                    <label>Name:</label>
+                    <span className="aff-name aff-details">
+                      <InlineEdit
+                        validate={this.customValidateText}
+                        activeClassName="editing"
+                        text={list.name}
+                        paramName="name"
+                        change={this.dataChanged.bind(this, index)}
+                      />
+                      <i className="material-icons edit">create</i>
+                    </span>
+                  </Col>
+                  <Col sm={4}>
+                    <label>Username:</label>
+                    <span className="aff-name aff-details">
+                      <InlineEdit
+                        validate={this.customValidateText}
+                        activeClassName="editing"
+                        text={list.username}
+                        paramName="username"
+                        change={this.dataChanged.bind(this, index)}
+                      />
+                      <i className="material-icons edit">create</i>
+                    </span>
+                  </Col>
+                  <Col sm={4}>
+                    <label>Email:</label>
+                    <span className="aff-name aff-details">
+                      <InlineEdit
+                        validate={this.customValidateText}
+                        activeClassName="editing"
+                        text={list.email}
+                        paramName="email"
+                        change={this.dataChanged.bind(this, index)}
+                      />
+                      <i className="material-icons edit">create</i>
+                    </span>
+                  </Col>
+                </Row>
               </div>
-            })}
+            }.bind(this))}
 
             { this.props.todos.map(function(todo, index){
-                return <div  key={index}>
+              var index = index++;
+                return <div  key={index} className="animated fadeIn">
                 <Row className="section-content add-affiliate head">
                   <Col sm={10} className="vert-align-middle">
                     <span className="affiliate-name">Untitled {index + 1}</span>
@@ -217,7 +310,7 @@ var Todos = React.createClass({
                     <div className="form-group col-sm-12 text-right">
                       <button onClick={this.saveAff.bind(this, index)} id="login-button" type="submit"
                         className="btn btn-st orange btn-md">
-                        Save
+                        Save {index}
                      </button>
                     </div>
                   </div>

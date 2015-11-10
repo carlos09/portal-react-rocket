@@ -19,7 +19,7 @@ function getLogins(){
   }
 }
 
-class Login extends React.Component {
+var Login = React.createClass({
   mixins: [LoginStore.mixin],
   getInitialState() {
     return getLogins();
@@ -31,6 +31,7 @@ class Login extends React.Component {
     this.setState(getLogins());
   },
   loginAction: function() {
+    console.log('refs are: ', this.refs);
     var username = ReactDOM.findDOMNode(this.refs.username).value;
     var password = ReactDOM.findDOMNode(this.refs.password).value;
     var token = ReactDOM.findDOMNode(this.refs.token).value;
@@ -76,16 +77,7 @@ class Login extends React.Component {
       </DocumentTitle>
     );
   }
-}
 
-@SidebarMixin
-export default class extends React.Component {
-  render() {
+});
 
-    return (
-      <Container id='container'>
-        <Login />
-      </Container>
-    );
-  }
-}
+module.exports = Login;
