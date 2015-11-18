@@ -149,7 +149,7 @@ body {
       }
 
       .section-content {
-        padding: 20px 0;
+        padding: 15px 0;
         border-bottom: 1px solid #d7d7d7;
 
         &:last-child {
@@ -210,6 +210,12 @@ body {
   float: none;
 }
 
+.vert-align-bottom {
+  display: inline-block;
+  vertical-align: bottom;
+  float: none;
+}
+
 .btn {
   &:focus {outline:0 !important;}
 
@@ -245,7 +251,6 @@ body {
 }
 
 .st-overlay {
-
   &.light {
     background-color: rgba(0,0,0, .8);
     position: absolute;
@@ -253,4 +258,42 @@ body {
     height: 100%;
     z-index: 1;
   }
+}
+
+/* Bootstrap Toggle Switches */
+.bootstrap-switch {
+  background-color: lighten(#bdbdbd, 20%);
+  border: none !important;
+  margin: 0px 0 10px;
+  cursor: default !important;
+
+  &.bootstrap-switch-focused {
+    outline: 0 !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+
+  .bootstrap-switch-container {
+    cursor: default !important;
+  }
+
+  .bootstrap-switch-st-on {
+    background-color: $orange;
+    color: #fff !important;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .bootstrap-switch-st-off {
+    background-color: #bdbdbd;
+    color: #fff !important;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .bootstrap-switch-label {
+    background-color: lighten(#bdbdbd, 20%) !important;
+    cursor: default !important;
+  }
+
 }

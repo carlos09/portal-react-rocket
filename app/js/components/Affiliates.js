@@ -1,6 +1,7 @@
 import React         from 'react/addons';
 import ReactDOM         from 'react-dom';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
+import {Link}        from 'react-router';
 import McFly from 'McFly';
 import InlineEdit from 'react-edit-inline';
 
@@ -11,202 +12,145 @@ var Flux = new McFly();
 /** Store */
 
 var _affiliates = [];
-var _affList = [{
+
+var _affiliateList = [
+  {
     index: 65655,
     name: "Some Name",
     username: "stranger",
-    email: "stranger@danger.com"
-}];
-
-function addTodo(text){
-    _affiliates.push(text);
+    email: "stranger@danger.com",
+    company: "Station"
+  },
+  {
+    index: 6432,
+    name: "Some Name2",
+    username: "stranger2",
+    email: "stranger2@danger.com",
+    company: "Go Pro"
+  },
+  {
+    index: 65235,
+    name: "Some Name3",
+    username: "stranger3",
+    email: "stranger3@danger.com",
+    company: "Redbull"
+  }
+];
+function addAffiliate(data) {
+    console.log('adding in... ', data);
+    _affiliateList.push(data);
 }
 
-function cancelAff(key){
-    _affiliates.splice( key, 1);
-}
-
-function saveAff(affObj){
-  console.log('the object is: ', affObj);
-    _affList.push(affObj);
-
-    var affIndex = affObj.index;
-    cancelAff(affIndex);
-}
-
-function updateAff(updatedObj){
-  var i = updatedObj.index;
-  var name = updatedObj.name;
-  console.log('updatedObj() ', updatedObj);
-  console.log('current list: ', _affList[i]);
-
-  _affList[i].push({name: name});
-
-    //_affList.set(updatedObj);
-    //
-    // var affIndex = affObj.index;
-    // cancelAff(affIndex);
+function getAffiliatesList(text){
+  console.log('getAffiliatesList()');
+//  _affiliateList.push(text);
 }
 
 var AffiliatesStore = Flux.createStore({
-    getTodos: function(){
-      console.log('getTodos()');
-       return _affiliates;
-    },
-    getAffList: function(){
-      console.log('getAffList()');
-       return _affList;
-    }
-}, function(payload){
-    if(payload.actionType === "ADD_AFFILIATES") {
-        addTodo(payload.text);
-        AffiliatesStore.emitChange();
-    }
-    if(payload.actionType === "CANCEL_AFFILIATE") {
-      cancelAff(payload.num);
-      AffiliatesStore.emitChange();
-    }
-    if(payload.actionType === "SAVE_AFFILIATE") {
-      var affObj = ({
-        name: payload.name,
-        username: payload.username,
-        email: payload.email,
-        index: payload.index
-      });
-
-      saveAff(affObj);
-      AffiliatesStore.emitChange();
-    }
-    if(payload.actionType === "UPDATE_AFFILIATE") {
-      var updatedObj = ({
-        index: payload.index,
-        name: payload.data
-      });
-      updateAff(updatedObj);
-      AffiliatesStore.emitChange();
-    }
+  getAffiliates: function(){
+     return _affiliates;
+  },
+  getAffiliatesList: function(){
+    console.log('in store');
+    return _affiliateList;
+  }
+}, function(payload) {
+  if(payload.actionType === "ADD_AFFILIATE") {
+    console.log('data is : ', payload)
+    var newAffiliate = {
+      name: payload.name,
+      username: payload.username,
+      company: payload.company,
+      email: payload.email
+    };
+    addAffiliate(newAffiliate);
+    AffiliatesStore.emitChange();
+  }
 });
 
 /** Actions */
 
 var AffiliatesActions = Flux.createActions({
-    addTodo: function(text){
-       return {
-          actionType: "ADD_AFFILIATES",
-          text: text
-       }
-    },
-    cancelAff: function(num) {
-      return {
-        actionType: "CANCEL_AFFILIATE",
-        key: num
-      }
-    },
-    saveAff: function(name, username, email,index) {
-      return {
-        actionType: "SAVE_AFFILIATE",
-        name: name,
-        username: username,
-        email: email,
-        index: index
-      }
-    },
-    updateAff: function(index, data) {
-      console.log('updatedAff()', index);
-      console.log('updated data is: ', data.name);
-      var name = data.name;
-      return {
-        actionType: "UPDATE_AFFILIATE",
-        index: index,
-        data: name
-      }
+  addAffiliate: function(data){
+    console.log('adding in2..', data);
+    return {
+      actionType: "ADD_AFFILIATE",
+        name: data.name,
+        username: data.username,
+        company: data.company,
+        email: data.email
     }
+  }
 });
 
 function getState(){
    return {
-       todos: AffiliatesStore.getTodos(),
-       list: AffiliatesStore.getAffList()
+       list: AffiliatesStore.getAffiliatesList()
    }
 }
 
-function getAffList(){
-   return {
-       list: AffiliatesStore.getAffList()
-   }
-}
-
-/** Controller View */
-
-var Affiliates = React.createClass({
+var Container = React.createClass({
     mixins: [AffiliatesStore.mixin],
-    getInitialState: function(){
-        return getState();
-    },
-    onChange: function() {
-        this.setState(getState());
-    },
-    render: function() {
-      console.log('state is: ', this.state);
-        return <Todos todos={this.state.todos} list={this.state.list} />;
-    }
-});
-
-/** Controller View */
-
-var AffiliateList = React.createClass({
-    mixins: [AffiliatesStore.mixin],
-    getInitialState: function(){
-        return getAffList();
-    },
-    onChange: function() {
-        this.setState(getAffList());
-    },
-    render: function() {
-        return <AffList list={this.state.list} />;
-    }
-});
-
-/** Component */
-
-var Todos = React.createClass({
-  getInitialState: function() {
+  getInitialState: function(sectionList){
     return {
-      editState: false
+      openSectionIndex: -1,
+      status: null,
+      data: {
+        name: '',
+        username: '',
+        company: '',
+        email: ''
+      }
     }
   },
-  editAffiliate: function() {
-    var active = !this.state.editState;
-    this.setState({ editState: active });
+  buildSections: function(sectionList){
+    console.log('building.. ', sectionList);
+    var sections = sectionList.map(this.buildSection)
+    return sections;
   },
-    addTodo: function(){
-        AffiliatesActions.addTodo('test');
-    },
-    cancelAff: function(num) {
-      AffiliatesActions.cancelAff(num);
-    },
-    saveAff: function(index) {
+  buildSection: function(section, index){
+      var openStatus = (index === this.state.openSectionIndex);
+      var addStatus = this.state.status;
 
-      console.log('passed index: ' + index);
-      var name = ReactDOM.findDOMNode(this.refs.affname).value;
-      var username = ReactDOM.findDOMNode(this.refs.affusername).value;
-      var email = ReactDOM.findDOMNode(this.refs.affemail).value;
-
-      AffiliatesActions.saveAff(name, username, email, index);
-    },
-    dataChanged: function(index, data) {
-        console.log('some change: ', data.key);
-        console.log('data change index:', index);
-
-        AffiliatesActions.updateAff(index, data);
-    },
-    render: function() {
-      //console.log('props are: ', this.props);
-
-      console.log('state is: ', this.state);
-      var editClass = this.state.editState === false ? 'animated fadeOutUp hidden' : 'animated fadeInDown';
-      var editClassMain = this.state.editState === false ? '' : 'edit-aff';
-
+      /* Remember to add a 'key'. React wants you to add an identifier when you instantiate a component multiple times */
+      return <Section key={index} id={index} data={section} toggleOne={this.toggleOne} open={openStatus} status={addStatus} />
+  },
+  addSections:function (affiliateList) {
+    console.log('new list:', affiliateList);
+    //
+    // var additions = affiliateList.map(this.addSection);
+    // return additions;
+  },
+  addSection: function(addition, index) {
+    return <Addition key={index} id={index} data={addition} status={addStatus}/>
+  },
+  toggleOne: function(id){
+    if(this.state.openSectionIndex === id){
+      this.setState({openSectionIndex: -1});
+    } else {
+      this.setState({openSectionIndex: id});
+    }
+  },
+  addAffiliate: function() {
+    console.log('this.state: ', this.state);
+    var newIndex = this.props.data.length + 1;
+    var data = {
+        name: 'Untitled Affiliate ' + newIndex,
+        username: '',
+        email: '',
+        company: ''
+    }
+    AffiliatesActions.addAffiliate(data);
+  },
+  storeDidChange: function() {
+    var newProps = this.props.data;
+    //this.setState(getAffiliatesList());
+    this.buildSections(newProps);
+    this.forceUpdate();
+  },
+  render: function() {
+    console.log('render!', this.state);
+    var sections = this.buildSections(this.props.data);
     return (
       <section className="affiliates">
         <div className="container-fluid affiliates-info">
@@ -217,120 +161,178 @@ var Todos = React.createClass({
                 <h2 className="heading">Manage Affiliates</h2>
               </Col>
             </Row>
-
-            { this.props.list.map(function(list, index) {
-              console.log('INDEX IS: ', index);
-
-              return <div key={index}>
-                <Row className={"section-content info " + editClassMain}>
-                  <Col sm={11} className="vert-align-middle">
-                    <span className="affiliate-name">{list.name}</span>
-                    <span className="edit" onClick={this.editAffiliate.bind(this, index)}>edit</span>
-                  </Col>
-
-                  <Col sm={1} className="vert-align-middle">
-                    <i className="affiliate-showmore material-icons">keyboard_arrow_right</i>
-                  </Col>
-                </Row>
-                <Row className={"section-content details " + editClass}>
-                  <Col sm={4}>
-                    <label>Name:</label>
-                    <span className="aff-name aff-details">
-                      <InlineEdit
-                        validate={this.customValidateText}
-                        activeClassName="editing"
-                        text={list.name}
-                        paramName="name"
-                        change={this.dataChanged.bind(this, index)}
-                      />
-                      <i className="material-icons edit">create</i>
-                    </span>
-                  </Col>
-                  <Col sm={4}>
-                    <label>Username:</label>
-                    <span className="aff-name aff-details">
-                      <InlineEdit
-                        validate={this.customValidateText}
-                        activeClassName="editing"
-                        text={list.username}
-                        paramName="username"
-                        change={this.dataChanged.bind(this, index)}
-                      />
-                      <i className="material-icons edit">create</i>
-                    </span>
-                  </Col>
-                  <Col sm={4}>
-                    <label>Email:</label>
-                    <span className="aff-name aff-details">
-                      <InlineEdit
-                        validate={this.customValidateText}
-                        activeClassName="editing"
-                        text={list.email}
-                        paramName="email"
-                        change={this.dataChanged.bind(this, index)}
-                      />
-                      <i className="material-icons edit">create</i>
-                    </span>
-                  </Col>
-                </Row>
-              </div>
-            }.bind(this))}
-
-            { this.props.todos.map(function(todo, index){
-              var index = index++;
-                return <div  key={index} className="animated fadeIn">
-                <Row className="section-content add-affiliate head">
-                  <Col sm={10} className="vert-align-middle">
-                    <span className="affiliate-name">Untitled {index + 1}</span>
-                  </Col>
-
-                  <Col sm={2} className="vert-align-middle">
-                    <button onClick={this.cancelAff.bind(this,index)} id="cancel-button" type="submit"
-                      className="btn btn-st red outline cancel btn-sm">
-                      Cancel
-                   </button>
-                  </Col>
-                </Row>
-
-                <Row className="section-content add-affiliate body">
-
-                  <div id="login-form" role="form">
-                    <div className="form-group col-sm-4">
-                      <label>Name</label>
-                      <input type="text" name="aff-name" ref="affname"></input>
-                    </div>
-                    <div className="form-group col-sm-4">
-                      <label>Username</label>
-                      <input type="text" name="aff-username" ref="affusername"></input>
-                    </div>
-                    <div className="form-group col-sm-4">
-                      <label>Email Address</label>
-                      <input type="text" name="aff-email" ref="affemail"></input>
-                    </div>
-                    <div className="form-group col-sm-12 text-right">
-                      <button onClick={this.saveAff.bind(this, index)} id="login-button" type="submit"
-                        className="btn btn-st orange btn-md">
-                        Save {index}
-                     </button>
-                    </div>
-                  </div>
-                </Row>
-              </div>
-
-            }.bind(this))}
-
+            {sections}
             <Row className="section-content addNew">
               <Col sm={12}>
-                <span className="add" onClick={this.addTodo}><i className="fa fa-plus"></i> Add an Affiliate</span>
+                <span className="add" onClick={this.addAffiliate}><i className="fa fa-plus"></i> Add an Affiliate</span>
               </Col>
             </Row>
-
           </Col>
         </div>
-
       </section>
     );
   }
 });
+
+var Section = React.createClass({
+  getInitialState: function() {
+    console.log('component props: ', this.props);
+    return {
+      editing: false,
+      status: 'completed',
+      data: {
+        name: this.props.data.name,
+        username: this.props.data.username,
+        email: this.props.data.email,
+        company: this.props.data.company
+      }
+    };
+  },
+  toggleContent: function(){
+    this.props.toggleOne(this.props.id)
+  },
+  getHeight: function(){
+    if(this.props.open){
+      return "open"
+    } else {
+      return "hidden"
+    }
+  },
+  _enterEditMode: function(event) {
+    event.preventDefault();
+    this.setState({editing: true, status: 'pending'});
+  },
+  _cancelEditMode: function(event) {
+    event.preventDefault();
+    this.setState({editing: false, status: 'completed'});
+  },
+  _submit: function(event) {
+    event.preventDefault();
+
+    var data = {
+      name: ReactDOM.findDOMNode(this.refs.name).value,
+      username: ReactDOM.findDOMNode(this.refs.username).value,
+      email: ReactDOM.findDOMNode(this.refs.email).value,
+      company: ReactDOM.findDOMNode(this.refs.company).value
+    };
+    this._updateHandler(data);
+
+    // Editing is still being handled by the Profile component
+    this.setState({editing: false});
+  },
+  render: function() {
+    console.log('new state: ', this.state);
+    var styleClass = this.getHeight() === "open" ? " open" : "";
+    var styleClassAnimate = this.getHeight() === 'open' ? 'open animated fadeIn' : 'hidden';
+    var isOpen = this.getHeight() === "open" ? "" : "hidden";
+
+    if (this.state.editing) {
+      return (
+        <div className="animated fadeIn">
+          <Row className={"section-content info section " + this.props.id + " " + styleClass}>
+            <Col sm={10} className="vert-align-middle">
+              <span className="affiliate-name">{this.state.data.name}</span>
+            </Col>
+            <Col sm={2} className="vert-align-middle text-right">
+              <span className="cancel-btn" onClick={this._cancelEditMode}>Cancel</span>
+            </Col>
+          </Row>
+
+          <Row className={"section-content details edit " + styleClassAnimate}>
+            <form>
+              <div className="container-fluid">
+                <Col sm={3}>
+                  <label>Name: </label>
+                  <input type="text" name="name" ref="name" defaultValue={this.state.data.name}  />
+                </Col>
+                <Col sm={3}>
+                  <label>Username: </label>
+                  <input type="text" name="username" ref="username" defaultValue={this.state.data.username}  />
+                </Col>
+                <Col sm={3}>
+                  <label>Email: </label>
+                  <input type="text" name="email" ref="email" defaultValue={this.state.data.email}  />
+                </Col>
+                <Col sm={3}>
+                  <label>Company: </label>
+                  <input type="text" name="company" ref="company" defaultValue={this.state.data.company}  />
+                </Col>
+              </div>
+              <div className="container-fluid text-right">
+                <Col sm={12} className="text-right">
+                  <button className="btn btn-st orange" onClick={this._submit}>Save</button>
+                </Col>
+              </div>
+            </form>
+          </Row>
+        </div>
+      )
+    } else {
+      return (
+        <div className="animated fadeIn">
+          <Row className={"section-content info section " + this.props.id + " " + styleClass}>
+            <Col sm={10} className="vert-align-middle">
+              <span className="affiliate-name">{this.state.data.name}</span>
+              <i className={"fa fa-pencil " + isOpen} onClick={this._enterEditMode}></i>
+            </Col>
+            <Col sm={2} className="vert-align-middle text-right">
+              <div className={"icon-trans vert-align-middle " + styleClass} onClick={this.toggleContent}>
+                <i className="fa fa-plus"></i>
+                <i className="fa fa-minus"></i>
+              </div>
+                <Link to="/stations"><i className="vert-align-middle affiliate-showmore material-icons">keyboard_arrow_right</i></Link>
+            </Col>
+          </Row>
+
+          <Row className={"section-content details edit " + styleClassAnimate}>
+            <Col sm={3}>
+              <label>Name: </label>
+              <span className="title">{this.state.data.name}</span>
+            </Col>
+            <Col sm={3}>
+              <label>Username: </label>
+              <span className="title">{this.state.data.username}</span>
+            </Col>
+            <Col sm={3}>
+              <label>Email: </label>
+              <span className="title">{this.state.data.email}</span>
+            </Col>
+            <Col sm={3}>
+              <label>Company: </label>
+              <span className="title">{this.state.data.company}</span>
+            </Col>
+          </Row>
+        </div>
+      );
+    }
+  },
+  _updateHandler: function(data) {
+    var state = this.state;
+
+    state.data.name = data.name;
+    state.data.username = data.username;
+    state.data.company = data.company;
+    state.data.email = data.email;
+
+     this.setState(state);
+  }
+});
+
+
+
+/** Controller View */
+
+var Affiliates = React.createClass({
+  getInitialState:function() {
+    return getState();
+  },
+  onChange: function() {
+    console.log('change!2');
+  },
+  render: function() {
+    return <Container data={_affiliateList} />;
+  }
+});
+
 
 export default Affiliates;
