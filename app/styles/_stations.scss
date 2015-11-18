@@ -177,12 +177,13 @@ section.stations {
             cursor: pointer;
           }
 
-          input {
+          input, textarea {
             border-radius: 5px;
             border: 1px solid #ccc;
             padding: 10px;
             color: lighten($darkgrey-text, 45%);
             font-weight: 300;
+            width: 100%;
 
             &:focus {
               outline: none;
@@ -223,23 +224,4 @@ section.stations {
       }
     }
   }
-}
-
-.sectionTitle {
-  display: block;
-  cursor: pointer;
-}
-
-.sectionContent {
-  overflow: hidden;
-  -webkit-transition: height 0.3s ease-in;
-  -moz-transition: height 0.3s ease-in;
-  -o-transition: height 0.3s ease-in;
-  -ms-transition: height 0.3s ease-in;
-  transition: height 0.3s ease-in;
-}
-
-.animated {
-  -webkit-animation-duration: .5s;
-  animation-duration: .5s;
 }

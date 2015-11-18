@@ -3,7 +3,8 @@ import ReactDOM         from 'react-dom';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 import {Link}        from 'react-router';
 import McFly from 'McFly';
-import InlineEdit from 'react-edit-inline';
+import DropzoneJs     from './DropzoneJs';
+import UsersList      from './UsersList';
 var Switch = require('react-bootstrap-switch');
 
 /** McFly */
@@ -175,7 +176,7 @@ var Section = React.createClass({
           station_title: this.props.data.station_title,
           station_url: this.props.data.station_url,
           description: this.props.data.description,
-          coverImg: ''
+          coverImg: this.props.data.coverImg
         }
       }
     }else {
@@ -187,7 +188,7 @@ var Section = React.createClass({
           station_title: this.props.data.station_title,
           station_url: this.props.data.station_url,
           description: this.props.data.description,
-          coverImg: ''
+          coverImg: this.props.data.coverImg
         }
       }
     }
@@ -212,34 +213,56 @@ var Section = React.createClass({
   },
   _submit: function(event) {
     event.preventDefault();
-
+console.log('submit state ', this.state);
     var data = {
       station_name: ReactDOM.findDOMNode(this.refs.station_name).value,
       station_url: ReactDOM.findDOMNode(this.refs.station_url).value,
       station_title: ReactDOM.findDOMNode(this.refs.station_title).value,
       description: ReactDOM.findDOMNode(this.refs.description).value,
-      coverImg: ''
+      coverImg: ReactDOM.findDOMNode(this.refs.coverImg).src
     };
-
+console.log('submit data: ', data);
     this._updateHandler(data);
     this.setState({editing: false, status: 'completed'});
   },
+  onDrop(files) {
+    console.log('Received files: ', files);
+  },
+  onAddCoverImg: function(res){
+    var newFile = {
+      //id:uuid(),
+      name:res.file.name,
+      size: res.file.size,
+      altText:'',
+      caption: '',
+      file:res.file,
+      url:res.imageUrl
+    };
+    //this.executeAction(newImageAction, newFile);
+    this.setState({
+      data: {
+        station_name: ReactDOM.findDOMNode(this.refs.station_name).value,
+        coverImg: newFile.url
+      }
+    })
+  },
   render: function() {
     //console.log('props: ', this.props);
-    console.log(this.state);
+    console.log('render state is: ', this.state);
     var styleClass = this.getHeight() === "open" ? " open" : "";
     var styleClassAnimate = this.getHeight() === 'open' ? 'open animated fadeIn' : 'hidden';
     var isOpen = this.getHeight() === "open" ? "" : "hidden";
+    //var logoPreview = this.state.logoImgUrl === undefined ? 'hidden' : '';
 
     if (this.state.editing) {
       return (
         <div className="animated fadeIn">
           <Row className={"section-content info edit-mode section open " + this.props.id}>
             <Col sm={2} className="vert-align-middle">
-              <img className="img-responsive" src={this.props.data.coverImg} />
+              <img className="img-responsive" src={this.state.data.coverImg} />
             </Col>
             <Col sm={8} className="vert-align-middle">
-              <span className="affiliate-name">{this.state.data.station_name}</span>
+                <span className="affiliate-name">{this.state.data.station_name}</span>
             </Col>
             <Col sm={2} className="vert-align-middle text-right">
               <span className="cancel-btn" onClick={this._cancelEditMode}>Cancel</span>
@@ -250,6 +273,13 @@ var Section = React.createClass({
           <form>
             <div className="container-fluid">
               <Col sm={7}>
+                <div className="img-upload-box">
+                  <DropzoneJs onDrop={this.onAddCoverImg}>
+                    <div className="dropArea">+ Drag file here to upload</div>
+                     <img className={"upload-preview img-responsive "} ref="coverImg" src={this.state.data.coverImg} />
+                  </DropzoneJs>
+                </div>
+
                 <div className="form-group title-row">
                   <label>Edit Station Name: </label>
                   <input ref="station_name" defaultValue={this.state.data.station_name} />
@@ -264,7 +294,7 @@ var Section = React.createClass({
                 </div>
                 <div className="title-row">
                   <label>Edit Station Description: </label>
-                  <input ref="description" defaultValue={this.state.data.description} />
+                  <textarea ref="description" defaultValue={this.state.data.description} cols="100" />
                 </div>
               </Col>
               <Col sm={5}>
@@ -290,7 +320,7 @@ var Section = React.createClass({
         <div className="animated fadeIn">
           <Row className={"section-content info section " + this.props.id + " " + styleClass}>
             <Col sm={2} className="vert-align-middle">
-              <img className="img-responsive" src={this.props.data.coverImg} />
+              <img className="img-responsive" src={this.state.data.coverImg} />
             </Col>
             <Col sm={8} className="vert-align-middle">
               <span className="affiliate-name">{this.state.data.station_name}</span>
@@ -350,6 +380,7 @@ var Section = React.createClass({
                 <label>Station Contributors: </label>
                 <span className="title">{this.props.data.username}</span>
               </div>
+              <UsersList />
             </Col>
           </Row>
         </div>
@@ -357,6 +388,7 @@ var Section = React.createClass({
     }
   },
   _updateHandler: function(data) {
+    console.log('data coming in: ', data);
     var state = this.state;
 
     state.data.station_name = data.station_name;
