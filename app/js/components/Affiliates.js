@@ -37,13 +37,7 @@ var _affiliateList = [
   }
 ];
 function addAffiliate(data) {
-    console.log('adding in... ', data);
     _affiliateList.push(data);
-}
-
-function getAffiliatesList(text){
-  console.log('getAffiliatesList()');
-//  _affiliateList.push(text);
 }
 
 var AffiliatesStore = Flux.createStore({
@@ -51,12 +45,10 @@ var AffiliatesStore = Flux.createStore({
      return _affiliates;
   },
   getAffiliatesList: function(){
-    console.log('in store');
     return _affiliateList;
   }
 }, function(payload) {
   if(payload.actionType === "ADD_AFFILIATE") {
-    console.log('data is : ', payload)
     var newAffiliate = {
       name: payload.name,
       username: payload.username,
@@ -72,7 +64,6 @@ var AffiliatesStore = Flux.createStore({
 
 var AffiliatesActions = Flux.createActions({
   addAffiliate: function(data){
-    console.log('adding in2..', data);
     return {
       actionType: "ADD_AFFILIATE",
         name: data.name,
@@ -104,7 +95,6 @@ var Container = React.createClass({
     }
   },
   buildSections: function(sectionList){
-    console.log('building.. ', sectionList);
     var sections = sectionList.map(this.buildSection)
     return sections;
   },
@@ -112,17 +102,7 @@ var Container = React.createClass({
       var openStatus = (index === this.state.openSectionIndex);
       var addStatus = this.state.status;
 
-      /* Remember to add a 'key'. React wants you to add an identifier when you instantiate a component multiple times */
-      return <Section key={index} id={index} data={section} toggleOne={this.toggleOne} open={openStatus} status={addStatus} />
-  },
-  addSections:function (affiliateList) {
-    console.log('new list:', affiliateList);
-    //
-    // var additions = affiliateList.map(this.addSection);
-    // return additions;
-  },
-  addSection: function(addition, index) {
-    return <Addition key={index} id={index} data={addition} status={addStatus}/>
+      return <Section key={index} id={index} data={section} toggleOne={this.toggleOne} open={openStatus} />
   },
   toggleOne: function(id){
     if(this.state.openSectionIndex === id){
@@ -132,7 +112,6 @@ var Container = React.createClass({
     }
   },
   addAffiliate: function() {
-    console.log('this.state: ', this.state);
     var newIndex = this.props.data.length + 1;
     var data = {
         name: 'Untitled Affiliate ' + newIndex,
@@ -144,12 +123,10 @@ var Container = React.createClass({
   },
   storeDidChange: function() {
     var newProps = this.props.data;
-    //this.setState(getAffiliatesList());
     this.buildSections(newProps);
     this.forceUpdate();
   },
   render: function() {
-    console.log('render!', this.state);
     var sections = this.buildSections(this.props.data);
     return (
       <section className="affiliates">
@@ -176,17 +153,29 @@ var Container = React.createClass({
 
 var Section = React.createClass({
   getInitialState: function() {
-    console.log('component props: ', this.props);
-    return {
-      editing: false,
-      status: 'completed',
-      data: {
-        name: this.props.data.name,
-        username: this.props.data.username,
-        email: this.props.data.email,
-        company: this.props.data.company
+    if (this.props.data.username === "") {
+      return {
+        editing: true,
+        status: 'pending',
+        data: {
+          name: this.props.data.name,
+          username: this.props.data.username,
+          email: this.props.data.email,
+          company: this.props.data.company
+        }
       }
-    };
+    }else {
+      return {
+        editing: false,
+        status: 'completed',
+        data: {
+          name: this.props.data.name,
+          username: this.props.data.username,
+          email: this.props.data.email,
+          company: this.props.data.company
+        }
+      }
+    }
   },
   toggleContent: function(){
     this.props.toggleOne(this.props.id)
@@ -215,13 +204,11 @@ var Section = React.createClass({
       email: ReactDOM.findDOMNode(this.refs.email).value,
       company: ReactDOM.findDOMNode(this.refs.company).value
     };
-    this._updateHandler(data);
 
-    // Editing is still being handled by the Profile component
-    this.setState({editing: false});
+    this._updateHandler(data);
+    this.setState({editing: false, status: 'completed'});
   },
   render: function() {
-    console.log('new state: ', this.state);
     var styleClass = this.getHeight() === "open" ? " open" : "";
     var styleClassAnimate = this.getHeight() === 'open' ? 'open animated fadeIn' : 'hidden';
     var isOpen = this.getHeight() === "open" ? "" : "hidden";
@@ -229,7 +216,7 @@ var Section = React.createClass({
     if (this.state.editing) {
       return (
         <div className="animated fadeIn">
-          <Row className={"section-content info section " + this.props.id + " " + styleClass}>
+          <Row className={"section-content info section " + this.props.id + " open"}>
             <Col sm={10} className="vert-align-middle">
               <span className="affiliate-name">{this.state.data.name}</span>
             </Col>
@@ -238,7 +225,7 @@ var Section = React.createClass({
             </Col>
           </Row>
 
-          <Row className={"section-content details edit " + styleClassAnimate}>
+          <Row className={"section-content details edit open animated fadeIn"}>
             <form>
               <div className="container-fluid">
                 <Col sm={3}>
@@ -318,16 +305,11 @@ var Section = React.createClass({
   }
 });
 
-
-
 /** Controller View */
 
 var Affiliates = React.createClass({
   getInitialState:function() {
     return getState();
-  },
-  onChange: function() {
-    console.log('change!2');
   },
   render: function() {
     return <Container data={_affiliateList} />;

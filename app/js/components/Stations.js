@@ -12,7 +12,7 @@ var Flux = new McFly();
 
 /** Store */
 
-var _Stations = [];
+var _stations = [];
 
 var _stationsList = [
   {
@@ -45,28 +45,23 @@ function addStation(data) {
     _stationsList.push(data);
 }
 
-function getStationsList(text){
-  console.log('getStationsList()');
-//  _stationsList.push(text);
-}
-
 var StationsStore = Flux.createStore({
   getStations: function(){
      return _stations;
   },
   getStationsList: function(){
-    console.log('in store');
     return _stationsList;
   }
 }, function(payload) {
-  if(payload.actionType === "ADD_AFFILIATE") {
-    var pendingStation = {
-      id: payload.id,
-      status: payload.status,
-      open: payload.open,
-      data: payload.data
+  if(payload.actionType === "ADD_STATION") {
+    var newStation = {
+      station_name: payload.station_name,
+      station_title: payload.station_title,
+      station_url: payload.station_url,
+      description: payload.description,
+      coverImg: payload.coverImg
     };
-    addStation(pendingStation);
+    addStation(newStation);
     StationsStore.emitChange();
   }
 });
@@ -74,14 +69,15 @@ var StationsStore = Flux.createStore({
 /** Actions */
 
 var StationsActions = Flux.createActions({
-  addStation: function(penAff){
-    console.log('penAff', penAff);
+  addStation: function(data){
+    console.log('data is: ', data);
     return {
-      actionType: "ADD_AFFILIATE",
-      id: penAff.id,
-      open: penAff.open,
-      status: penAff.status,
-      data: penAff.data
+      actionType: "ADD_STATION",
+      station_name: data.station_name,
+      station_title: data.station_title,
+      station_url: data.station_url,
+      description: data.description,
+      coverImg: data.coverImg
     }
   }
 });
@@ -101,8 +97,8 @@ var Container = React.createClass({
       status: null,
       data: {
         station_name: '',
-        station_url: '',
         station_title: '',
+        station_url: '',
         description: '',
         coverImg: ''
       }
@@ -117,17 +113,7 @@ var Container = React.createClass({
       var openStatus = (index === this.state.openSectionIndex);
       var addStatus = this.state.status;
 
-      /* Remember to add a 'key'. React wants you to add an identifier when you instantiate a component multiple times */
-      return <Section key={index} id={index} data={section} toggleOne={this.toggleOne} open={openStatus} status={addStatus} />
-  },
-  addSections:function (stationsList) {
-    console.log('new list:', stationsList);
-    //
-    // var additions = stationsList.map(this.addSection);
-    // return additions;
-  },
-  addSection: function(addition, index) {
-    return <Addition key={index} id={index} data={addition} status={addStatus}/>
+      return <Section key={index} id={index} data={section} toggleOne={this.toggleOne} open={openStatus} />
   },
   toggleOne: function(id){
     if(this.state.openSectionIndex === id){
@@ -137,23 +123,18 @@ var Container = React.createClass({
     }
   },
   addStation: function() {
-    var newIndex = this.props.data.length;
-    var newStation = {
-      id: newIndex,
-      open: false,
-      status: 'pending',
-      data: {
-        name: '',
-        username: '',
-        emal: '',
-        company: ''
-      }
+    var newIndex = this.props.data.length + 1;
+    var data = {
+      station_name: 'Untitled Station ' + newIndex,
+      station_title: '',
+      station_url: '',
+      description: '',
+      coverImg: ''
     }
-    StationsActions.addStation(newStation);
+    StationsActions.addStation(data);
   },
   storeDidChange: function() {
     var newProps = this.props.data;
-    //this.setState(getStationsList());
     this.buildSections(newProps);
     this.forceUpdate();
   },
@@ -185,17 +166,31 @@ var Container = React.createClass({
 
 var Section = React.createClass({
   getInitialState: function() {
-    console.log('component props: ', this.props);
-    return {
-      editing: false,
-      data: {
-        station_name: this.props.data.station_name,
-        station_url: this.props.data.station_url,
-        station_title: this.props.data.station_title,
-        description: this.props.data.description,
-        coverImg: this.props.data.coverImg
+    if (this.props.data.station_url === "") {
+      return {
+        editing: true,
+        status: 'pending',
+        data: {
+          station_name: this.props.data.station_name,
+          station_title: this.props.data.station_title,
+          station_url: this.props.data.station_url,
+          description: this.props.data.description,
+          coverImg: ''
+        }
       }
-    };
+    }else {
+      return {
+        editing: false,
+        status: 'completed',
+        data: {
+          station_name: this.props.data.station_name,
+          station_title: this.props.data.station_title,
+          station_url: this.props.data.station_url,
+          description: this.props.data.description,
+          coverImg: ''
+        }
+      }
+    }
   },
   toggleContent: function(){
     this.props.toggleOne(this.props.id)
@@ -209,11 +204,11 @@ var Section = React.createClass({
   },
   _enterEditMode: function(event) {
     event.preventDefault();
-    this.setState({editing: true});
+    this.setState({editing: true, status: 'pending'});
   },
   _cancelEditMode: function(event) {
     event.preventDefault();
-    this.setState({editing: false});
+    this.setState({editing: false, status: 'completed'});
   },
   _submit: function(event) {
     event.preventDefault();
@@ -222,19 +217,16 @@ var Section = React.createClass({
       station_name: ReactDOM.findDOMNode(this.refs.station_name).value,
       station_url: ReactDOM.findDOMNode(this.refs.station_url).value,
       station_title: ReactDOM.findDOMNode(this.refs.station_title).value,
-      description: ReactDOM.findDOMNode(this.refs.description).value
+      description: ReactDOM.findDOMNode(this.refs.description).value,
+      coverImg: ''
     };
-    this._updateHandler(data);
 
-    // Editing is still being handled by the Profile component
-    this.setState({editing: false});
-  },
-  SwitchToggle: function(elm, state) {
-    console.log('toggle!', state );
+    this._updateHandler(data);
+    this.setState({editing: false, status: 'completed'});
   },
   render: function() {
     //console.log('props: ', this.props);
-    console.log('new state: ', this.state);
+    console.log(this.state);
     var styleClass = this.getHeight() === "open" ? " open" : "";
     var styleClassAnimate = this.getHeight() === 'open' ? 'open animated fadeIn' : 'hidden';
     var isOpen = this.getHeight() === "open" ? "" : "hidden";
@@ -242,9 +234,9 @@ var Section = React.createClass({
     if (this.state.editing) {
       return (
         <div className="animated fadeIn">
-          <Row className={"section-content info edit-mode section " + this.props.id + " " + styleClass}>
+          <Row className={"section-content info edit-mode section open " + this.props.id}>
             <Col sm={2} className="vert-align-middle">
-              <img className="img-responsive" src={this.state.data.coverImg} />
+              <img className="img-responsive" src={this.props.data.coverImg} />
             </Col>
             <Col sm={8} className="vert-align-middle">
               <span className="affiliate-name">{this.state.data.station_name}</span>
@@ -254,7 +246,7 @@ var Section = React.createClass({
             </Col>
           </Row>
 
-          <Row className={"section-content details edit-mode " + styleClassAnimate}>
+          <Row className={"section-content details edit-mode open animated fadeIn"}>
           <form>
             <div className="container-fluid">
               <Col sm={7}>
@@ -298,7 +290,7 @@ var Section = React.createClass({
         <div className="animated fadeIn">
           <Row className={"section-content info section " + this.props.id + " " + styleClass}>
             <Col sm={2} className="vert-align-middle">
-              <img className="img-responsive" src={this.state.data.coverImg} />
+              <img className="img-responsive" src={this.props.data.coverImg} />
             </Col>
             <Col sm={8} className="vert-align-middle">
               <span className="affiliate-name">{this.state.data.station_name}</span>
@@ -367,29 +359,21 @@ var Section = React.createClass({
   _updateHandler: function(data) {
     var state = this.state;
 
-    console.log('update state: ', data);
-
     state.data.station_name = data.station_name;
     state.data.station_title = data.station_title;
     state.data.station_url = data.station_url;
     state.data.description = data.description;
-    //state.data.coverImg = data.coverImg;
+    state.data.coverImg = data.coverImg;
 
-    // The value is saved raw
-    // state.user.username = newUsername;
      this.setState(state);
-  },
+  }
 });
-
 
 /** Controller View */
 
 var Stations = React.createClass({
   getInitialState:function() {
     return getState();
-  },
-  onChange: function() {
-    console.log('change!2');
   },
   render: function() {
     return <Container data={_stationsList} />;
