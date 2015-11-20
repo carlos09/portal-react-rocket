@@ -4,75 +4,12 @@ import { Grid, Row, Col, Form } from 'react-bootstrap';
 import {Link}        from 'react-router';
 import McFly from 'McFly';
 import InlineEdit from 'react-edit-inline';
+import AffiliatesActions      from '../actions/AffiliatesActions';
+import AffiliatesStore        from '../stores/AffiliatesStore';
 
 /** McFly */
 
 var Flux = new McFly();
-
-/** Store */
-
-var _affiliates = [];
-
-var _affiliateList = [
-  {
-    index: 65655,
-    name: "Some Name",
-    username: "stranger",
-    email: "stranger@danger.com",
-    company: "Station"
-  },
-  {
-    index: 6432,
-    name: "Some Name2",
-    username: "stranger2",
-    email: "stranger2@danger.com",
-    company: "Go Pro"
-  },
-  {
-    index: 65235,
-    name: "Some Name3",
-    username: "stranger3",
-    email: "stranger3@danger.com",
-    company: "Redbull"
-  }
-];
-function addAffiliate(data) {
-    _affiliateList.push(data);
-}
-
-var AffiliatesStore = Flux.createStore({
-  getAffiliates: function(){
-     return _affiliates;
-  },
-  getAffiliatesList: function(){
-    return _affiliateList;
-  }
-}, function(payload) {
-  if(payload.actionType === "ADD_AFFILIATE") {
-    var newAffiliate = {
-      name: payload.name,
-      username: payload.username,
-      company: payload.company,
-      email: payload.email
-    };
-    addAffiliate(newAffiliate);
-    AffiliatesStore.emitChange();
-  }
-});
-
-/** Actions */
-
-var AffiliatesActions = Flux.createActions({
-  addAffiliate: function(data){
-    return {
-      actionType: "ADD_AFFILIATE",
-        name: data.name,
-        username: data.username,
-        company: data.company,
-        email: data.email
-    }
-  }
-});
 
 function getState(){
    return {
@@ -312,7 +249,7 @@ var Affiliates = React.createClass({
     return getState();
   },
   render: function() {
-    return <Container data={_affiliateList} />;
+    return <Container data={this.state.list} />;
   }
 });
 
