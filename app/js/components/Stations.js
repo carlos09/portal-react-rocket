@@ -22,7 +22,9 @@ var _stationsList = [
     station_url: "stranger@danger.com",
     station_title: "Station",
     description: "Cras ut nunc elementum, egestas tortor nec, dignissim turpis. Integer ex nisi, commodo sit amet erat vitae, sagittis mollis nisi. Curabitur sed leo pretium ex maximus ornare. In rhoncus posuere eros, non sollicitudin diam tristique in.",
-    coverImg: "http://a.espncdn.com/media/motion/2010/1228/actionsports20101227chadreed.jpg"
+    coverImg: "http://a.espncdn.com/media/motion/2010/1228/actionsports20101227chadreed.jpg",
+    privacy: true,
+    public_posting: false
   },
   {
     index: 6432,
@@ -30,7 +32,9 @@ var _stationsList = [
     station_url: "stranger2@danger.com",
     station_title: "Go Pro",
     description: "Morbi leo erat, auctor eget dui vel, suscipit ullamcorper velit. Praesent vulputate, felis a lobortis efficitur, diam neque ornare lacus, id hendrerit ante lacus vel justo.",
-    coverImg: "http://latimesblogs.latimes.com/photos/uncategorized/2008/07/30/x_games.jpg"
+    coverImg: "http://latimesblogs.latimes.com/photos/uncategorized/2008/07/30/x_games.jpg",
+    privacy: true,
+    public_posting: false
   },
   {
     index: 65235,
@@ -38,7 +42,9 @@ var _stationsList = [
     station_url: "stranger3@danger.com",
     station_title: "Redbull",
     description: "Proin quis arcu at sapien molestie suscipit eu ut metus. Etiam at pretium arcu, eu vehicula nibh. Cras nec nunc ullamcorper, gravida leo quis, egestas sem.",
-    coverImg: "http://image.redbull.com/rbx00390/0001/1/800/465/files/2613/8668/3825/ss_131130_BCONE_WING_HONG_0044.jpg"
+    coverImg: "http://image.redbull.com/rbx00390/0001/1/800/465/files/2613/8668/3825/ss_131130_BCONE_WING_HONG_0044.jpg",
+    privacy: false,
+    public_posting: true
   }
 ];
 function addStation(data) {
@@ -60,7 +66,9 @@ var StationsStore = Flux.createStore({
       station_title: payload.station_title,
       station_url: payload.station_url,
       description: payload.description,
-      coverImg: payload.coverImg
+      coverImg: payload.coverImg,
+      privacy: payload.privacy,
+      public_posting: payload.public_posting
     };
     addStation(newStation);
     StationsStore.emitChange();
@@ -78,7 +86,9 @@ var StationsActions = Flux.createActions({
       station_title: data.station_title,
       station_url: data.station_url,
       description: data.description,
-      coverImg: data.coverImg
+      coverImg: data.coverImg,
+      privacy: data.privacy,
+      public_posting: data.public_posting
     }
   }
 });
@@ -101,12 +111,13 @@ var Container = React.createClass({
         station_title: '',
         station_url: '',
         description: '',
-        coverImg: ''
+        coverImg: '',
+        privacy: '',
+        public_posting: ''
       }
     }
   },
   buildSections: function(sectionList){
-    console.log('building.. ', sectionList);
     var sections = sectionList.map(this.buildSection)
     return sections;
   },
@@ -130,17 +141,19 @@ var Container = React.createClass({
       station_title: '',
       station_url: '',
       description: '',
-      coverImg: ''
+      coverImg: '',
+      privacy: false,
+      public_posting: true
     }
     StationsActions.addStation(data);
   },
   storeDidChange: function() {
+    console.log('change!');
     var newProps = this.props.data;
     this.buildSections(newProps);
     this.forceUpdate();
   },
   render: function() {
-    console.log('render!');
     var sections = this.buildSections(this.props.data);
     return (
       <section className="stations">
@@ -176,7 +189,9 @@ var Section = React.createClass({
           station_title: this.props.data.station_title,
           station_url: this.props.data.station_url,
           description: this.props.data.description,
-          coverImg: this.props.data.coverImg
+          coverImg: this.props.data.coverImg,
+          privacy: this.props.data.privacy,
+          public_posting: this.props.data.public_posting
         }
       }
     }else {
@@ -188,13 +203,25 @@ var Section = React.createClass({
           station_title: this.props.data.station_title,
           station_url: this.props.data.station_url,
           description: this.props.data.description,
-          coverImg: this.props.data.coverImg
+          coverImg: this.props.data.coverImg,
+          privacy: this.props.data.privacy,
+          public_posting: this.props.data.public_posting
         }
       }
     }
   },
   toggleContent: function(){
     this.props.toggleOne(this.props.id)
+  },
+  toggleChange: function(state) {
+    console.log('some change', this.state);
+
+    //var publicState = ReactDOM.findDOMNode(this.refs.pubposting).state;
+    console.log('new state: ', state);
+
+    var test = state === true ? 'true' : 'false';
+    console .log('test var is: ', test);
+    return test;
   },
   getHeight: function(){
     if(this.props.open){
@@ -214,12 +241,15 @@ var Section = React.createClass({
   _submit: function(event) {
     event.preventDefault();
 console.log('submit state ', this.state);
+console.log('public state is: ', this.toggleChange());
+    var public_state = this.toggleChange() === "true" ? true : false;
     var data = {
       station_name: ReactDOM.findDOMNode(this.refs.station_name).value,
       station_url: ReactDOM.findDOMNode(this.refs.station_url).value,
       station_title: ReactDOM.findDOMNode(this.refs.station_title).value,
       description: ReactDOM.findDOMNode(this.refs.description).value,
-      coverImg: ReactDOM.findDOMNode(this.refs.coverImg).src
+      coverImg: ReactDOM.findDOMNode(this.refs.coverImg).src,
+      public_posting: public_state
     };
 console.log('submit data: ', data);
     this._updateHandler(data);
@@ -248,7 +278,7 @@ console.log('submit data: ', data);
   },
   render: function() {
     //console.log('props: ', this.props);
-    console.log('render state is: ', this.state);
+    //console.log('render state is: ', this.state);
     var styleClass = this.getHeight() === "open" ? " open" : "";
     var styleClassAnimate = this.getHeight() === 'open' ? 'open animated fadeIn' : 'hidden';
     var isOpen = this.getHeight() === "open" ? "" : "hidden";
@@ -296,6 +326,20 @@ console.log('submit data: ', data);
                   <label>Edit Station Description: </label>
                   <textarea ref="description" defaultValue={this.state.data.description} cols="100" />
                 </div>
+                <div className="title-row">
+                  <label>Privacy: </label>
+                  <Switch size="small" state={this.state.data.privacy} onColor="st-on" offColor="st-off" onText="On" offText="Off" />
+
+                  <span className="info-small">On - You are allowing anyone to view your Station and it's content.</span>
+                  <span className="info-small">Off - Your Station is not viewable to the public.</span>
+                </div>
+                <div className="title-row">
+                  <label>Public Posting: </label>
+                  <Switch size="small" state={this.state.data.public_posting} value={this.state.data.public_posting} onColor="st-on" offColor="st-off" onText="On" offText="Off" ref="publicState" onChange={this.toggleChange} />
+
+                  <span className="info-small">On - You are allowing anyone to publicly post on your Station.</span>
+                  <span className="info-small">Off - Only you as an Admin are allowed to post on your Station.</span>
+                </div>
               </Col>
               <Col sm={5}>
                 <div className="title-row users">
@@ -306,6 +350,7 @@ console.log('submit data: ', data);
                   <label>Station Contributors: </label>
                   <span className="title">{this.props.data.username}</span>
                 </div>
+                <UsersList />
               </Col>
             </div>
             <div className="container-fluid text-right">
@@ -358,17 +403,13 @@ console.log('submit data: ', data);
               </div>
               <div className="title-row">
                 <label>Privacy: </label>
-                <Switch size="small" state="true" onColor="st-on" offColor="st-off" onText="On" offText="Off" />
+                <Switch size="small" state={this.state.data.privacy} disabled={true} onColor="st-on" offColor="st-off" onText="On" offText="Off" />
 
-                <span className="info-small">On - You are allowing anyone to view your Station and it's content.</span>
-                <span className="info-small">Off - Your Station is not viewable to the public.</span>
               </div>
               <div className="title-row">
                 <label>Public Posting: </label>
-                <Switch size="small" state="false" onColor="st-on" offColor="st-off" onText="On" offText="Off" valueState="false" />
+                <Switch size="small" state={this.state.data.public_posting} disabled={true} onColor="st-on" offColor="st-off" onText="On" offText="Off" />
 
-              <span className="info-small">On - You are allowing anyone to publicly post on your Station.</span>
-              <span className="info-small">Off - Only you as an Admin are allowed to post on your Station.</span>
               </div>
             </Col>
             <Col sm={5}>

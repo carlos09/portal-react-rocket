@@ -47,10 +47,9 @@ const SidebarContent = (props) => {
             </div>
             <div className="text-center">
             <ul id="nav-list">
-              <li><Link to="/search"><i className="material-icons md-24">wifi_tethering</i> Search</Link></li>
+              <li><Link to="/affiliates"><i className="material-icons md-24">account_box</i> Affiliates</Link></li>
+              <li><Link to="/stations"><i className="material-icons md-24">wifi_tethering</i> Stations</Link></li>
               <li><Link to="/users"><i className="material-icons md-24">people</i> Users</Link></li>
-              <li><Link to="/payments"><i className="material-icons md-24">credit_card</i> Payments</Link></li>
-              <li><Link to="/dashboard"><i className="material-icons md-24">dashboard</i> Dashboard</Link></li>
               <li><Link to="/login"><i className="material-icons md-24">keyboard_tab</i> Login</Link></li>
             </ul>
           </div>

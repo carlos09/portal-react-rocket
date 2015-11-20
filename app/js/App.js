@@ -75,13 +75,22 @@ const App = React.createClass({
       onSetOpen: this.onSetOpen,
     };
 
-    return (
-      <Sidebar {...sidebarProps}>
-        <MaterialTitlePanel title={contentHeader}>
-          {this.renderChildren()}
-        </MaterialTitlePanel>
-      </Sidebar>
-    );
+    console.log('this.state ', this.props);
+    if( this.props.children.props.route.path === '/login') {
+      return (
+          <MaterialTitlePanel title={contentHeader}>
+            {this.renderChildren()}
+          </MaterialTitlePanel>
+      )
+    } else {
+      return (
+        <Sidebar {...sidebarProps}>
+          <MaterialTitlePanel title={contentHeader}>
+            {this.renderChildren()}
+          </MaterialTitlePanel>
+        </Sidebar>
+      )
+    }
   },
 });
 
