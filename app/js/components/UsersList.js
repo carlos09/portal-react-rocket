@@ -2,33 +2,167 @@ import React         from 'react/addons';
 import ReactDOM         from 'react-dom';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 import {Link}        from 'react-router';
+import McFly from 'McFly';
 import InlineEdit from 'react-edit-inline';
-import AffiliatesActions      from '../actions/AffiliatesActions';
-import AffiliatesStore        from '../stores/AffiliatesStore';
+
+/** McFly */
+
+var Flux = new McFly();
+
+/** Store */
+
+var _affiliates = [];
+
+
+var _usersList = [
+  {
+  "index": 1,
+  "roletype": "3",
+  "name": "Laurence",
+  "username": "Vaughn",
+  "fullname": "Joan Starr",
+  "email": "leslie@barrett.tj"
+  },
+  {
+  "index": 2,
+  "roletype": "3",
+  "name": "Clara",
+  "username": "Nguyen",
+  "fullname": "Edna Harvey",
+  "email": "nathan@benton.gd"
+  },
+  {
+  "index": 3,
+  "roletype": "2",
+  "name": "Shelley",
+  "username": "Tilley",
+  "fullname": "Dianne Hughes",
+  "email": "jane@fox.ls"
+  },
+  {
+  "index": 4,
+  "roletype": "1",
+  "name": "Erika",
+  "username": "Shaffer",
+  "fullname": "Alexander Kern",
+  "email": "marvin@steele.be"
+  },
+  {
+  "index": 5,
+  "roletype": "1",
+  "name": "Cynthia",
+  "username": "Phillips",
+  "fullname": "Emma Stephens",
+  "email": "gary@reilly.gu"
+  },
+  {
+  "index": 6,
+  "roletype": "2",
+  "name": "Douglas",
+  "username": "Lindsay",
+  "fullname": "Bradley Anthony",
+  "email": "annie@park.gn"
+  },
+  {
+  "index": 7,
+  "roletype": "2",
+  "name": "Jeff",
+  "username": "Anderson",
+  "fullname": "Lynne Barber",
+  "email": "harvey@haynes.ao"
+  },
+  {
+  "index": 8,
+  "roletype": "3",
+  "name": "Michelle",
+  "username": "Hoyle",
+  "fullname": "Paige Holmes",
+  "email": "sandy@stanton.tr"
+  },
+  {
+  "index": 9,
+  "roletype": "1",
+  "name": "Milton",
+  "username": "Sawyer",
+  "fullname": "Theresa Hanna",
+  "email": "heidi@barton.id"
+  },
+  {
+  "index": 10,
+  "roletype": "1",
+  "name": "Melanie",
+  "username": "Schultz",
+  "fullname": "Ronald Singer",
+  "email": "diana@o.mq"
+  }
+];
+
+function addAffiliate(data) {
+    _usersList.push(data);
+}
+
+var UsersListStore = Flux.createStore({
+  getAffiliates: function(){
+     return _affiliates;
+  },
+  getAffiliatesList: function(){
+    return _usersList;
+  }
+}, function(payload) {
+  if(payload.actionType === "ADD_USERSLIST") {
+    var newAffiliate = {
+      index: payload.index,
+      roletype: payload.roletype,
+      name: payload.name,
+      username: payload.username,
+      fullname: payload.fullname,
+      email: payload.email
+    };
+    addAffiliate(newAffiliate);
+    UsersListStore.emitChange();
+  }
+});
+
+/** Actions */
+
+var UsersListActions = Flux.createActions({
+  addAffiliate: function(data){
+    return {
+      actionType: "ADD_USERSLIST",
+        index: data.index,
+        roletype: data.roletype,
+        name: data.name,
+        username: data.username,
+        fullname: data.fullname,
+        email: data.email
+    }
+  }
+});
 
 function getState(){
    return {
-       list: AffiliatesStore.getAffiliatesList()
+       list: UsersListStore.getAffiliatesList()
    }
 }
 
 var Container = React.createClass({
-    mixins: [AffiliatesStore.mixin],
+    mixins: [UsersListStore.mixin],
   getInitialState: function(sectionList){
     return {
       openSectionIndex: -1,
-      status: null,
       data: {
+        index: '',
+        roletype: '',
         name: '',
         username: '',
-        company: '',
+        fullname: '',
         email: ''
       }
     }
   },
   buildSections: function(sectionList){
-    var sections = sectionList.map(this.buildSection)
-    return sections;
+    var users = sectionList.map(this.buildSection)
+    return users;
   },
   buildSection: function(section, index){
       var openStatus = (index === this.state.openSectionIndex);
@@ -46,12 +180,14 @@ var Container = React.createClass({
   addAffiliate: function() {
     var newIndex = this.props.data.length + 1;
     var data = {
-        name: 'Untitled Affiliate ' + newIndex,
+        index: '',
+        roletype:'',
+        name: 'Untitled User ' + newIndex,
         username: '',
         email: '',
-        company: ''
+        fullname: ''
     }
-    AffiliatesActions.addAffiliate(data);
+    UsersListActions.addAffiliate(data);
   },
   storeDidChange: function() {
     var newProps = this.props.data;
@@ -59,24 +195,14 @@ var Container = React.createClass({
     this.forceUpdate();
   },
   render: function() {
-    var sections = this.buildSections(this.props.data);
+    var users = this.buildSections(this.props.data);
     return (
-      <section className="affiliates">
-        <div className="container-fluid affiliates-info">
-          <Col sm={10} smOffset={1}>
+      <section className="userslist">
+        <div className="container-fluid no-padding">
 
-            <Row className="section-heading">
-              <Col sm={12}>
-                <h2 className="heading">Manage Affiliates</h2>
-              </Col>
-            </Row>
-            {sections}
-            <Row className="section-content addNew">
-              <Col sm={12}>
-                <span className="add" onClick={this.addAffiliate}><i className="fa fa-plus"></i> Add an Affiliate</span>
-              </Col>
-            </Row>
-          </Col>
+            {users}
+            <span className="add" onClick={this.addAffiliate}><i className="fa fa-plus"></i> Add a User</span>
+
         </div>
       </section>
     );
@@ -93,7 +219,7 @@ var Section = React.createClass({
           name: this.props.data.name,
           username: this.props.data.username,
           email: this.props.data.email,
-          company: this.props.data.company
+          fullname: this.props.data.fullname
         }
       }
     }else {
@@ -104,7 +230,7 @@ var Section = React.createClass({
           name: this.props.data.name,
           username: this.props.data.username,
           email: this.props.data.email,
-          company: this.props.data.company
+          fullname: this.props.data.fullname
         }
       }
     }
@@ -134,7 +260,7 @@ var Section = React.createClass({
       name: ReactDOM.findDOMNode(this.refs.name).value,
       username: ReactDOM.findDOMNode(this.refs.username).value,
       email: ReactDOM.findDOMNode(this.refs.email).value,
-      company: ReactDOM.findDOMNode(this.refs.company).value
+      fullname: ReactDOM.findDOMNode(this.refs.fullname).value
     };
 
     this._updateHandler(data);
@@ -147,7 +273,7 @@ var Section = React.createClass({
 
     if (this.state.editing) {
       return (
-        <div className="animated fadeIn">
+        <div className="animated fadeIn padding-sides-20">
           <Row className={"section-content info section " + this.props.id + " open"}>
             <Col sm={10} className="vert-align-middle">
               <span className="affiliate-name">{this.state.data.name}</span>
@@ -157,24 +283,20 @@ var Section = React.createClass({
             </Col>
           </Row>
 
-          <Row className={"section-content details edit open animated fadeIn"}>
+          <Row className={"section-content details edit-mode open animated fadeIn"}>
             <form>
               <div className="container-fluid">
-                <Col sm={3}>
+                <Col sm={12}>
                   <label>Name: </label>
                   <input type="text" name="name" ref="name" defaultValue={this.state.data.name}  />
                 </Col>
-                <Col sm={3}>
+                <Col sm={12}>
                   <label>Username: </label>
                   <input type="text" name="username" ref="username" defaultValue={this.state.data.username}  />
                 </Col>
-                <Col sm={3}>
+                <Col sm={12}>
                   <label>Email: </label>
                   <input type="text" name="email" ref="email" defaultValue={this.state.data.email}  />
-                </Col>
-                <Col sm={3}>
-                  <label>Company: </label>
-                  <input type="text" name="company" ref="company" defaultValue={this.state.data.company}  />
                 </Col>
               </div>
               <div className="container-fluid text-right">
@@ -188,7 +310,7 @@ var Section = React.createClass({
       )
     } else {
       return (
-        <div className="animated fadeIn">
+        <div className="animated fadeIn padding-sides-20">
           <Row className={"section-content info section " + this.props.id + " " + styleClass}>
             <Col sm={10} className="vert-align-middle">
               <span className="affiliate-name">{this.state.data.name}</span>
@@ -199,26 +321,21 @@ var Section = React.createClass({
                 <i className="fa fa-plus"></i>
                 <i className="fa fa-minus"></i>
               </div>
-                <Link to="/stations"><i className="vert-align-middle affiliate-showmore material-icons">keyboard_arrow_right</i></Link>
             </Col>
           </Row>
 
           <Row className={"section-content details edit " + styleClassAnimate}>
-            <Col sm={3}>
+            <Col sm={12}>
               <label>Name: </label>
               <span className="title">{this.state.data.name}</span>
             </Col>
-            <Col sm={3}>
+            <Col sm={12}>
               <label>Username: </label>
               <span className="title">{this.state.data.username}</span>
             </Col>
-            <Col sm={3}>
+            <Col sm={12}>
               <label>Email: </label>
               <span className="title">{this.state.data.email}</span>
-            </Col>
-            <Col sm={3}>
-              <label>Company: </label>
-              <span className="title">{this.state.data.company}</span>
             </Col>
           </Row>
         </div>
@@ -230,7 +347,7 @@ var Section = React.createClass({
 
     state.data.name = data.name;
     state.data.username = data.username;
-    state.data.company = data.company;
+    state.data.fullname = data.fullname;
     state.data.email = data.email;
 
      this.setState(state);
@@ -239,14 +356,14 @@ var Section = React.createClass({
 
 /** Controller View */
 
-var Affiliates = React.createClass({
+var UsersList = React.createClass({
   getInitialState:function() {
     return getState();
   },
   render: function() {
-    return <Container data={this.state.list} />;
+    return <Container data={_usersList} />;
   }
 });
 
 
-export default Affiliates;
+export default UsersList;
