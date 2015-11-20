@@ -13,7 +13,8 @@ import Dashboard                  from './components/Dashboard';
 import Assets                     from './components/Assets';
 import Login                      from './components/Login';
 import Users                      from './components/Users';
-import Affiliates                from './components/Affiliates';
+import Affiliates                 from './components/Affiliates';
+import Stations                   from './components/Stations';
 
 export default (
   <Router history={CreateBrowserHistory()}>
@@ -29,6 +30,7 @@ export default (
       <Route path="/login" component={Login} />
       <Route path="/users" component={Users} />
       <Route path="/affiliates" component={Affiliates} />
+      <Route path="/stations" component={Stations} />
 
       <Route path="*" component={NotFoundPage} />
 
