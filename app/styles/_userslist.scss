@@ -1,0 +1,82 @@
+section.userslist {
+
+  .container-fluid.no-padding {
+
+    .padding-sides-20 {
+      &:nth-child(even) {
+
+        .section-content {
+          background-color: $grey;
+        }
+      }
+
+      &:nth-child(odd) {
+
+        .section-content {
+          background-color: #fff;
+        }
+      }
+
+      .section-content {
+        border-bottom: 0;
+        padding: 10px 0;
+        border-radius: 0;
+        margin-bottom: 0;
+
+        &.details {
+          padding-top: 0;
+
+          .col-sm-12 {
+            margin-bottom: 10px;
+
+            label {
+              margin-bottom: 0;
+            }
+          }
+
+          &.edit-mode {
+            padding: 0px 0px 10px;
+
+            .cancel-btn {
+              color: $orange;
+              cursor: pointer;
+            }
+
+            input, textarea {
+              border-radius: 5px;
+              border: 1px solid #ccc;
+              padding: 5px 10px;
+              color: lighten($darkgrey-text, 45%);
+              font-weight: 300;
+              width: 100%;
+
+              &:focus {
+                outline: none;
+              }
+            }
+
+            .btn {
+              margin-top: 0px;
+              padding: 5px 15px;
+              font-size: 14px;
+            }
+          }
+        }
+
+        .icon-trans {
+          border-width: 1px;
+          width: 21px;
+          height: 21px;
+          background-color: transparent;
+
+          i {
+            width: 19px;
+            height: 19px;
+            font-size: 12px;
+            line-height: 21px;
+          }
+        }
+      }
+    }
+  }
+}

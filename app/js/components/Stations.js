@@ -2,96 +2,11 @@ import React         from 'react/addons';
 import ReactDOM         from 'react-dom';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 import {Link}        from 'react-router';
-import McFly from 'McFly';
 import DropzoneJs     from './DropzoneJs';
 import UsersList      from './UsersList';
+import StationsActions      from '../actions/StationsActions';
+import StationsStore        from '../stores/StationsStore';
 var Switch = require('react-bootstrap-switch');
-
-/** McFly */
-
-var Flux = new McFly();
-
-/** Store */
-
-var _stations = [];
-
-var _stationsList = [
-  {
-    index: 65655,
-    station_name: "Some Name",
-    station_url: "stranger@danger.com",
-    station_title: "Station",
-    description: "Cras ut nunc elementum, egestas tortor nec, dignissim turpis. Integer ex nisi, commodo sit amet erat vitae, sagittis mollis nisi. Curabitur sed leo pretium ex maximus ornare. In rhoncus posuere eros, non sollicitudin diam tristique in.",
-    coverImg: "http://a.espncdn.com/media/motion/2010/1228/actionsports20101227chadreed.jpg",
-    privacy: true,
-    public_posting: false
-  },
-  {
-    index: 6432,
-    station_name: "Some Name2",
-    station_url: "stranger2@danger.com",
-    station_title: "Go Pro",
-    description: "Morbi leo erat, auctor eget dui vel, suscipit ullamcorper velit. Praesent vulputate, felis a lobortis efficitur, diam neque ornare lacus, id hendrerit ante lacus vel justo.",
-    coverImg: "http://latimesblogs.latimes.com/photos/uncategorized/2008/07/30/x_games.jpg",
-    privacy: true,
-    public_posting: false
-  },
-  {
-    index: 65235,
-    station_name: "Some Name3",
-    station_url: "stranger3@danger.com",
-    station_title: "Redbull",
-    description: "Proin quis arcu at sapien molestie suscipit eu ut metus. Etiam at pretium arcu, eu vehicula nibh. Cras nec nunc ullamcorper, gravida leo quis, egestas sem.",
-    coverImg: "http://image.redbull.com/rbx00390/0001/1/800/465/files/2613/8668/3825/ss_131130_BCONE_WING_HONG_0044.jpg",
-    privacy: false,
-    public_posting: true
-  }
-];
-function addStation(data) {
-    console.log('adding in... ', data);
-    _stationsList.push(data);
-}
-
-var StationsStore = Flux.createStore({
-  getStations: function(){
-     return _stations;
-  },
-  getStationsList: function(){
-    return _stationsList;
-  }
-}, function(payload) {
-  if(payload.actionType === "ADD_STATION") {
-    var newStation = {
-      station_name: payload.station_name,
-      station_title: payload.station_title,
-      station_url: payload.station_url,
-      description: payload.description,
-      coverImg: payload.coverImg,
-      privacy: payload.privacy,
-      public_posting: payload.public_posting
-    };
-    addStation(newStation);
-    StationsStore.emitChange();
-  }
-});
-
-/** Actions */
-
-var StationsActions = Flux.createActions({
-  addStation: function(data){
-    console.log('data is: ', data);
-    return {
-      actionType: "ADD_STATION",
-      station_name: data.station_name,
-      station_title: data.station_title,
-      station_url: data.station_url,
-      description: data.description,
-      coverImg: data.coverImg,
-      privacy: data.privacy,
-      public_posting: data.public_posting
-    }
-  }
-});
 
 function getState(){
    return {
@@ -214,13 +129,10 @@ var Section = React.createClass({
     this.props.toggleOne(this.props.id)
   },
   toggleChange: function(state) {
-    console.log('some change', this.state);
 
     //var publicState = ReactDOM.findDOMNode(this.refs.pubposting).state;
-    console.log('new state: ', state);
 
     var test = state === true ? 'true' : 'false';
-    console .log('test var is: ', test);
     return test;
   },
   getHeight: function(){
@@ -240,8 +152,6 @@ var Section = React.createClass({
   },
   _submit: function(event) {
     event.preventDefault();
-console.log('submit state ', this.state);
-console.log('public state is: ', this.toggleChange());
     var public_state = this.toggleChange() === "true" ? true : false;
     var data = {
       station_name: ReactDOM.findDOMNode(this.refs.station_name).value,
@@ -251,7 +161,6 @@ console.log('public state is: ', this.toggleChange());
       coverImg: ReactDOM.findDOMNode(this.refs.coverImg).src,
       public_posting: public_state
     };
-console.log('submit data: ', data);
     this._updateHandler(data);
     this.setState({editing: false, status: 'completed'});
   },
@@ -429,7 +338,6 @@ console.log('submit data: ', data);
     }
   },
   _updateHandler: function(data) {
-    console.log('data coming in: ', data);
     var state = this.state;
 
     state.data.station_name = data.station_name;
@@ -449,7 +357,7 @@ var Stations = React.createClass({
     return getState();
   },
   render: function() {
-    return <Container data={_stationsList} />;
+    return <Container data={this.state.list} />;
   }
 });
 
