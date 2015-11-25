@@ -142,7 +142,7 @@ body {
       margin-bottom: 25px;
 
         h2.heading {
-          color: $orange;
+          color: lighten($darkgrey-text, 25%);
           font-size: 28px;
           font-weight: 300;
         }

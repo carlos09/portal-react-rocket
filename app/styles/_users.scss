@@ -1,67 +1,100 @@
 section.users {
-  .users-info {
-    padding: 50px 0;
+  .container-fluid:first-child {
+    padding-top: 25px;
+  }
 
-    .section-content {
+  .pre-row {
+    &:nth-child(even) {
+      .section-row {
+        border-top: none;
+        border-bottom: none;
+      }
+    }
+
+    &:first-child {
+      .section-row {
+        border-top: 1px solid #c3c3c3 !important;
+      }
+    }
+
+    &:last-child {
+      .section-row {
+        border-bottom: 1px solid #c3c3c3 !important;
+      }
+    }
+
+    &:hover {
+      .section-row {
+        background-color: #f6f6f6;
+      }
+    }
+
+    .section-row {
       background-color: #fff;
-      border-radius: 15px;
-      color: $darkgrey;
+      color: lighten($darkgrey-text, 25%);
+      padding: 25px 0;
+      border: 1px solid #c3c3c3;
+      -webkit-transition: all .15s linear;
+      -moz-transition: all .15s linear;
+      -o-transition: all .15s linear;
 
-      &.info {
-        margin-bottom: 0px;
-        border-radius: 0;
+      .icon-trans {
+        .zmdi {
+          font-size: 16px;
+          margin: 0 10px;
+          -webkit-transition: all .15s linear;
+          -moz-transition: all .15s linear;
+          -o-transition: all .15s linear;
 
-        &:last-child {
-          margin-bottom: 0;
+          &:hover {
+            color: $orange;
+            cursor: pointer;
+          }
         }
+      }
+    }
+  }
+}
 
-        &.heading {
-          background-color: $darkgrey;
-          border-radius: 15px 15px 0 0;
-          margin-bottom: 0;
+.modal.user-modals {
+  .modal-dialog {
+    width: 75%;
 
-          span.title {
-            color: #fff;
+    .modal-header {
+      background-color: #f6f6f6;
 
-            i {
-              //color: $orange;
+      .row {
+        padding: 5px;
 
-              &.fa {
-                font-size: 14px;
-              }
-            }
+        span {
+          font-size: 12px;
+        }
+        
+        &.column-titles {
+          span {
+            color: darken(#f6f6f6, 35%);
+            font-weight: 300;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+
+    .modal-body {
+      .row {
+        padding: 5px;
+        &.column-titles {
+          span {
+            color: darken(#f6f6f6, 35%);
+            font-weight: 300;
+            font-size: 12px;
           }
         }
       }
 
-      span.username {
-        color: $orange;
-      }
-
-      span.view-more {
-        i {
-          background-color: #959595;
-          color: #fff;
-          border-radius: 50px;
-        }
-      }
-
-      &.addNew {
-        background-color: #fff;
-        border-radius: 0 0 15px 15px;
-        padding: 15px 0;
-
-        i.fa-plus {
-          background-color: $orange;
-          color: #fff;
-          padding: 2px;
-          border-radius: 50px;
-          width: 20px;
-          height: 20px;
-          text-align: center;
-          vertical-align: middle;
-          line-height: 1.25;
-        }
+      hr {
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
     }
   }
