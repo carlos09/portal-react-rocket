@@ -8,13 +8,15 @@ import App                         from './App';
 import HomePage                    from './pages/HomePage';
 import SearchPage                  from './pages/SearchPage';
 import NotFoundPage                from './pages/NotFoundPage';
-import Payments                   from './components/Payments';
-import Dashboard                  from './components/Dashboard';
-import Assets                     from './components/Assets';
-import Login                      from './components/Login';
-import Users                      from './components/Users';
-import Affiliates                 from './components/Affiliates';
-import Stations                   from './components/Stations';
+import Payments                    from './components/Payments';
+import Dashboard                   from './components/Dashboard';
+import Assets                      from './components/Assets';
+import Login                       from './components/Login';
+import Users                       from './components/Users';
+import Affiliates                  from './components/Affiliates';
+import Stations                    from './components/Stations';
+import UsersList                   from './components/UsersList';
+import ToggleSwitch                from './components/ToggleSwitch';
 
 export default (
   <Router history={CreateBrowserHistory()}>
@@ -31,6 +33,8 @@ export default (
       <Route path="/users" component={Users} />
       <Route path="/affiliates" component={Affiliates} />
       <Route path="/stations" component={Stations} />
+      <Route path="/userslist" component={UsersList} />
+      <Route path="/toggle" component={ToggleSwitch} />
 
       <Route path="*" component={NotFoundPage} />
 
