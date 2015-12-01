@@ -4,6 +4,7 @@ import { Grid, Row, Col, Form, Modal } from 'react-bootstrap';
 import {Link}        from 'react-router';
 import UsersActions      from '../actions/UsersActions';
 import UsersStore        from '../stores/UsersStore';
+import UsersSteps        from './Users/UsersSteps';
 
 function getState(){
    return {
@@ -45,7 +46,7 @@ var Container = React.createClass({
   addUser: function() {
     var newIndex = this.props.data.length + 1;
     var data = {
-        name: 'Untitled Affiliate ' + newIndex,
+        name: 'User ' + newIndex,
         username: '',
         email: '',
         company: ''
@@ -64,12 +65,30 @@ var Container = React.createClass({
         <div className="container-fluid">
           <Col sm={12}>
 
-            <Row className="section-heading hidden">
-              <Col sm={12}>
-                <h2 className="heading">Manage Affiliates</h2>
+            <Row className="col-titles">
+              <Col sm={1} className="vert-align-middle">
+                <span>User ID</span>
+              </Col>
+              <Col sm={2} className="vert-align-middle">
+                <span>Username</span>
+              </Col>
+              <Col sm={2} className="vert-align-middle">
+                <span>Full Name</span>
+              </Col>
+              <Col sm={3} className="vert-align-middle">
+                <span>Email Address</span>
+              </Col>
+              <Col sm={2} className="vert-align-middle">
+                <span>Phone Number</span>
               </Col>
             </Row>
             {sections}
+
+            <Row className="section-content addNew">
+              <Col sm={12}>
+                <span className="add" onClick={this.addUser}><i className="fa fa-plus"></i> Add User</span>
+              </Col>
+            </Row>
 
           </Col>
         </div>
@@ -77,7 +96,6 @@ var Container = React.createClass({
     );
   }
 });
-
 
 var Section = React.createClass({
   getInitialState: function() {
@@ -141,8 +159,6 @@ var Section = React.createClass({
     var styleClassAnimate = this.getHeight() === 'open' ? 'open animated fadeIn' : 'hidden';
     var isOpen = this.getHeight() === "open" ? "" : "hidden";
 
-    console.log('data state', this.state);
-
       return (
         <div className="animated fadeIn pre-row">
           <Row className={"section-row " + this.props.id + " " + styleClass}>
@@ -173,34 +189,34 @@ var Section = React.createClass({
           <Modal className="user-modals" show={this.state.showModal} onHide={this.closeModal}>
           <Modal.Header closeButton>
             <Row className="column-titles">
-              <Col sm={2} className="vert-align-middle">
+              <Col sm={2} className="vert-align-middle custom-st st-11">
                 <span>User ID</span>
               </Col>
-              <Col sm={2} className="vert-align-middle">
+              <Col sm={2} className="vert-align-middle custom-st st-20">
                 <span>Username</span>
               </Col>
-              <Col sm={2} className="vert-align-middle">
+              <Col sm={2} className="vert-align-middle custom-st st-20">
                 <span>Full Name</span>
               </Col>
-              <Col sm={3} className="vert-align-middle">
+              <Col sm={3} className="vert-align-middle custom-st st-20">
                 <span>Email Address</span>
               </Col>
               <Col sm={2} className="vert-align-middle">
-                <span>Email Address</span>
+                <span>Phone Address</span>
               </Col>
             </Row>
 
             <Row>
-              <Col sm={2} className="vert-align-middle">
+              <Col sm={2} className="vert-align-middle custom-st st-11">
                 <span>{this.state.data.userid}</span>
               </Col>
-              <Col sm={2} className="vert-align-middle">
+              <Col sm={2} className="vert-align-middle custom-st st-20">
                 <span>{this.state.data.username}</span>
               </Col>
-              <Col sm={2} className="vert-align-middle">
+              <Col sm={2} className="vert-align-middle custom-st st-20">
                 <span>{this.state.data.name}</span>
               </Col>
-              <Col sm={3} className="vert-align-middle">
+              <Col sm={3} className="vert-align-middle custom-st st-20">
                 <span>{this.state.data.email}</span>
               </Col>
               <Col sm={2} className="vert-align-middle">
@@ -209,39 +225,8 @@ var Section = React.createClass({
             </Row>
           </Modal.Header>
           <Modal.Body>
-            <Row className="column-titles">
-              <Col sm={2} className="vert-align-middle">
-                <span>Application Icon</span>
-              </Col>
-              <Col sm={2} className="vert-align-middle">
-                <span>Application Name</span>
-              </Col>
-              <Col sm={2} className="vert-align-middle">
-                <span>Station ID</span>
-              </Col>
-              <Col sm={3} className="vert-align-middle">
-                <span>Station Title</span>
-              </Col>
-              <Col sm={2} className="vert-align-middle">
-                <span>Station Role</span>
-              </Col>
-              <Col sm={1} className="vert-align-middle">
-                <span>Actions</span>
-              </Col>
-            </Row>
 
-            <hr />
-
-            <h4>Overflowing text to show scroll behavior</h4>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            <UsersSteps />
           </Modal.Body>
         </Modal>
 
