@@ -9,7 +9,7 @@ var Flux = new McFly();
 
 /** Actions */
 var UsersActions = Flux.createActions({
-  addAffiliate: function(data){
+  addUser: function(data){
     return {
       actionType: "ADD_USER",
         name: data.name,

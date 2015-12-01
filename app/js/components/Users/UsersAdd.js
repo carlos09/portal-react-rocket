@@ -9,7 +9,7 @@ var UsersAdd = React.createClass({
       <div className="animated fadeIn">
         <Row className="desc">
           <Col sm={12}>
-            <span>ADD: Select which station you would like to add this user to</span>
+            <span>Select which station you would like to add this user to</span>
           </Col>
         </Row>
         <Row className="column-titles">
@@ -26,16 +26,14 @@ var UsersAdd = React.createClass({
             <span>Station Title</span>
           </Col>
           <Col sm={2} className="vert-align-middle">
-            <span>Station Role</span>
           </Col>
           <Col sm={1} className="vert-align-middle">
-            <span>Actions</span>
           </Col>
         </Row>
 
         <hr />
 
-        <Row className="details">
+        <Row className="details station" onClick={this.nextStep}>
           <Col sm={2} className="vert-align-middle">
             <img src="http://placehold.it/80x80" />
           </Col>
@@ -49,16 +47,11 @@ var UsersAdd = React.createClass({
             <span>Action Sports</span>
           </Col>
           <Col sm={2} className="vert-align-middle">
-            <span>Station Manager</span>
           </Col>
           <Col sm={1} className="vert-align-middle">
-            <div className="icon-trans vert-align-middle ">
-              <i className="zmdi zmdi-settings" onClick={this.detailsModal}></i>
-              <i className="zmdi zmdi-delete"></i>
-            </div>
           </Col>
         </Row>
-        <Row className="details">
+        <Row className="details station" onClick={this.nextStep}>
           <Col sm={2} className="vert-align-middle">
             <img src="http://placehold.it/80x80" />
           </Col>
@@ -72,17 +65,20 @@ var UsersAdd = React.createClass({
             <span>Action Sports</span>
           </Col>
           <Col sm={2} className="vert-align-middle">
-            <span>Station Manager</span>
           </Col>
           <Col sm={1} className="vert-align-middle">
-            <div className="icon-trans vert-align-middle ">
-              <i className="zmdi zmdi-settings" onClick={this.detailsModal}></i>
-              <i className="zmdi zmdi-delete"></i>
-            </div>
           </Col>
         </Row>
       </div>
     )
+  },
+  nextStep: function(e) {
+    e.preventDefault()
+
+    this.props.nextStep('role');
+  },
+  previousStep:function() {
+    this.this.props.previousStep('add');
   }
 });
 

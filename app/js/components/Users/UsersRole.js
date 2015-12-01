@@ -6,6 +6,7 @@ var TextSelect = require('react-textselect');
 
 var UsersRole = React.createClass({
   getInitialState: function() {
+    console.log('props are: ', this.props);
     return {
       selectedOption: 1
     }
@@ -23,6 +24,7 @@ var UsersRole = React.createClass({
         <Row className="desc">
           <Col sm={12}>
             <span>Role: Select which station you would like to add this user to</span>
+            <span onClick={this.previousStep}>Back</span>
           </Col>
         </Row>
         <Row className="column-titles">
@@ -78,6 +80,10 @@ var UsersRole = React.createClass({
     e.preventDefault()
 
     this.props.nextStep('add')
+  },
+  previousStep:function() {
+    console.log('this.props ', this.props);
+    //this.this.props.previousStep('add');
   }
 });
 

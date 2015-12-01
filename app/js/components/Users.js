@@ -105,6 +105,7 @@ var Section = React.createClass({
       editing: false,
       status: 'completed',
       showModal: false,
+      view: null,
       data: {
         userid: this.props.data._id,
         appName: this.props.data.appName,
@@ -149,7 +150,11 @@ var Section = React.createClass({
   },
   detailsModal: function() {
     console.log('open modal');
-    this.setState({showModal: true});
+    this.setState({showModal: true, view: 'details'});
+  },
+  addUsersModal: function() {
+    console.log('open modal');
+    this.setState({showModal: true, view: 'add'});
   },
   closeModal:function() {
     this.setState({ showModal: false });
@@ -180,13 +185,13 @@ var Section = React.createClass({
             <Col sm={2} className="vert-align-middle">
               <div className="icon-trans vert-align-middle ">
                 <i className="zmdi zmdi-forward" onClick={this.detailsModal}></i>
-                <i className="zmdi zmdi-account-add"></i>
+                <i className="zmdi zmdi-account-add" onClick={this.addUsersModal}></i>
                 <i className="zmdi zmdi-delete"></i>
               </div>
             </Col>
           </Row>
 
-          <Modal className="user-modals" show={this.state.showModal} onHide={this.closeModal}>
+          <Modal className="user-modals" show={this.state.showModal} onHide={this.closeModal} details={this.state.details} addUser={this.state.addUser}>
           <Modal.Header closeButton>
             <Row className="column-titles">
               <Col sm={2} className="vert-align-middle custom-st st-11">
@@ -226,7 +231,7 @@ var Section = React.createClass({
           </Modal.Header>
           <Modal.Body>
 
-            <UsersSteps />
+            <UsersSteps data={this.state.view} />
           </Modal.Body>
         </Modal>
 

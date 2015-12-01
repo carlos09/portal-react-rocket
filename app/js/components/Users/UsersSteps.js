@@ -10,9 +10,10 @@ import UsersRole          from './UsersRole';
 import UsersAdd           from './UsersAdd';
 
 var UsersSteps = React.createClass({
-  getInitialState: function() {
+  getInitialState: function(view) {
+    var view = this.props.data;
     return {
-      step : 'detail'
+      step : view
     }
   },
 
@@ -23,15 +24,16 @@ var UsersSteps = React.createClass({
   },
 
   nextStep: function(view) {
-    console.log('passed', view);
+    console.log("next step:", view);
     this.setState({
       step : view
     })
   },
 
-  previousStep: function() {
+  previousStep: function(view) {
+    console.log('previous: ', view);
     this.setState({
-      step : this.state.step - 1
+      step : view
     })
   },
 
@@ -43,9 +45,9 @@ var UsersSteps = React.createClass({
     this.nextStep()
   },
 
-  showStep: function() {
+  showStep: function(view) {
     switch (this.state.step) {
-      case 'detail':
+      case 'details':
         return <UsersDetail nextStep={this.nextStep}
                               previousStep={this.previousStep}
                               saveValues={this.saveValues} />
@@ -54,13 +56,14 @@ var UsersSteps = React.createClass({
                              previousStep={this.previousStep}
                              saveValues={this.saveValues} />
       case 'add':
-        return <UsersAdd previousStep={this.previousStep}
+        return <UsersAdd nextStep={this.nextStep}
+                            previousStep={this.previousStep}
                              submitRegistration={this.submitRegistration} />
 
     }
   },
 
-  render: function() {
+  render: function(view) {
     return (
       <main>
         {this.showStep()}
