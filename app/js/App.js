@@ -52,7 +52,6 @@ const App = React.createClass({
     }
   },
   renderChildren() {
-    console.log('query: ', this.props.query);
     return React.cloneElement(this.props.children, {
       params: this.props.params,
       query: this.props.query,
