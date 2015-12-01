@@ -6,7 +6,7 @@ var LoginActions = Flux.createActions({
     API.callToken(ak, function (res, response) {
 
       var token = response.body.Payload.Token;
-      console.log('response', response);
+      console.log('response', token);
       LoginActions.hasToken(token);
     })
     // return {

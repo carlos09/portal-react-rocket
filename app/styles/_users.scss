@@ -1,68 +1,196 @@
 section.users {
-  .users-info {
-    padding: 50px 0;
+  .container-fluid:first-child {
+    padding-top: 25px;
+  }
 
-    .section-content {
+  .row {
+    &.col-titles {
+      margin-bottom: 10px;
+
+      span {
+        color: #929292;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .pre-row {
+
+    &:hover {
+      .section-row {
+        background-color: #f6f6f6;
+      }
+    }
+
+    .section-row {
       background-color: #fff;
-      border-radius: 15px;
-      color: $darkgrey;
+      color: lighten($darkgrey-text, 25%);
+      padding: 25px 0;
+      border: 1px solid #c3c3c3;
+      margin-top: -1px;
+      -webkit-transition: all .15s linear;
+      -moz-transition: all .15s linear;
+      -o-transition: all .15s linear;
 
-      &.info {
-        margin-bottom: 0px;
-        border-radius: 0;
+      .icon-trans {
+        .zmdi {
+          font-size: 16px;
+          margin: 0 10px;
+          -webkit-transition: all .15s linear;
+          -moz-transition: all .15s linear;
+          -o-transition: all .15s linear;
 
-        &:last-child {
-          margin-bottom: 0;
+          &:hover {
+            color: $orange;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal.user-modals {
+  .modal-dialog {
+    width: 85%;
+
+    .modal-header {
+      background-color: #f5f5f5;
+
+      .row {
+        padding: 5px;
+
+        span {
+          font-size: 12px;
         }
 
-        &.heading {
-          background-color: $darkgrey;
-          border-radius: 15px 15px 0 0;
-          margin-bottom: 0;
+        &.column-titles {
+          span {
+            color: darken(#f5f5f5, 35%);
+            font-weight: 300;
+            font-size: 12px;
+          }
+        }
+      }
 
-          span.title {
-            color: #fff;
+      .close {
+        margin-top: -2px;
+        border: 3px solid #bcbcbc;
+        width: 30px;
+        text-align: center;
+        height: 30px;
+        line-height: 11px;
+        border-radius: 50%;
+        padding: 5px;
+        color: #bcbcbc;
+        opacity: 1;
 
-            i {
-              //color: $orange;
+        &:focus {
+          outline: 0;
+        }
+      }
+    }
 
-              &.fa {
-                font-size: 14px;
+    .modal-body {
+      .row {
+        padding: 5px;
+        &.column-titles {
+          span {
+            color: darken(#f6f6f6, 35%);
+            font-weight: 300;
+            font-size: 12px;
+          }
+        }
+
+        &.desc {
+          font-size: 12px;
+          font-weight: 300;
+          color: #929292;
+        }
+
+        &.details {
+          padding: 10px 5px;
+
+          &:nth-child(even) {
+              background-color: #f5f5f5;
+          }
+
+          &.station {
+            cursor: pointer;
+            -webkit-transition: all .15s linear;
+            -moz-transition: all .15s linear;
+            -o-transition: all .15s linear;
+
+            &:hover {
+              background-color: darken(#f6f6f6, 1%);
+            }
+          }
+
+          span {
+            color: #232323;
+            font-size: 14px;
+            font-weight: 300;
+
+            &.react-textselect {
+              color: $orange;
+              cursor: pointer;
+
+              span {
+                color: $orange;
+                cursor: pointer;
               }
+
+              select {
+                cursor: pointer;
+              }
+            }
+          }
+
+          .btn-st {
+            &.btn-sm {
+              font-size: 14px;
+              padding: 5px 15px;
+              border-radius: 4px;
+              border: 0;
             }
           }
         }
       }
 
-      span.username {
-        color: $orange;
-      }
-
-      span.view-more {
-        i {
-          background-color: #959595;
-          color: #fff;
-          border-radius: 50px;
-        }
-      }
-
-      &.addNew {
-        background-color: #fff;
-        border-radius: 0 0 15px 15px;
-        padding: 15px 0;
-
-        i.fa-plus {
-          background-color: $orange;
-          color: #fff;
-          padding: 2px;
-          border-radius: 50px;
-          width: 20px;
-          height: 20px;
-          text-align: center;
-          vertical-align: middle;
-          line-height: 1.25;
-        }
+      hr {
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
     }
+  }
+
+  .icon-trans {
+    .zmdi {
+      font-size: 16px;
+      margin: 0 8px;
+      color: #232323;
+      -webkit-transition: all .15s linear;
+      -moz-transition: all .15s linear;
+      -o-transition: all .15s linear;
+
+      &:hover {
+        color: $orange;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .react-textselect {
+    border-bottom: 0;
+  }
+}
+
+&.custom-st {
+  &.st-11 {
+    width: 11.66666667%;
+  }
+
+  &.st-20 {
+    width: 20%;
   }
 }

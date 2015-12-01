@@ -8,6 +8,8 @@ import { Grid, Row, Col, Form } from 'react-bootstrap';
 import LoginActions     from '../actions/LoginActions';
 import LoginStore       from '../stores/LoginStore';
 //import StationLogo      from './stationlogo';
+import UserLogin       from './LoginForm';
+
 
 var apiKey = "21922323610bcce1f91d8c272d71a4a7299aabef";
 
@@ -41,6 +43,7 @@ var Login = React.createClass({
     LoginActions.loginAction(username, password, token, apiKey);
   },
   render() {
+    console.log('state: ', this.state);
     var sessToken = this.state.token;
 
     return (
@@ -59,15 +62,8 @@ var Login = React.createClass({
 
                 <Row className="section-content">
                   <Col sm={4} smOffset={4} className="text-center">
-                    <div id="login" className='st-initial-form'>
-                      <input type="text" name="username" ref='username' placeholder='username or email' />
-                      <input type="password" name="password" ref='password' placeholder='password' />
-                      <input type="hidden" name="token" ref="token" value={sessToken} />
-
-                      <div className='btn btn-st orange' onClick={this.loginAction}>Sign In</div>
-                      <a href="#" className='forgot-link'>Forgot Password</a>
-
-                    </div>
+                    <UserLogin token={sessToken} />
+                    <a href="#" className='forgot-link'>Forgot Password</a>
                   </Col>
                 </Row>
 
