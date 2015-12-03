@@ -1,12 +1,13 @@
 import React         from 'react/addons';
 import ReactDOM         from 'react-dom';
-import { Grid, Row, Col, Form } from 'react-bootstrap';
+import { Grid, Row, Col, Form, Modal } from 'react-bootstrap';
 import {Link}        from 'react-router';
-import DropzoneJs     from './DropzoneJs';
 import UsersList      from './UsersList';
 import StationsActions      from '../actions/StationsActions';
 import StationsStore        from '../stores/StationsStore';
-var Switch = require('react-bootstrap-switch');
+import StationsEdit         from './Stations/StationsEdit';
+var TextSelect = require('react-textselect');
+import Switch from 'react-toggle-switch';
 
 function getState(){
    return {
@@ -40,14 +41,7 @@ var Container = React.createClass({
       var openStatus = (index === this.state.openSectionIndex);
       var addStatus = this.state.status;
 
-      return <Section key={index} id={index} data={section} toggleOne={this.toggleOne} open={openStatus} />
-  },
-  toggleOne: function(id){
-    if(this.state.openSectionIndex === id){
-      this.setState({openSectionIndex: -1});
-    } else {
-      this.setState({openSectionIndex: id});
-    }
+      return <Section key={index} id={index} data={section} />
   },
   addStation: function() {
     var newIndex = this.props.data.length + 1;
@@ -68,20 +62,39 @@ var Container = React.createClass({
     this.buildSections(newProps);
     this.forceUpdate();
   },
+  toggle: function(value) {
+    // do something with value
+    console.log('some toggle');
+  },
   render: function() {
     var sections = this.buildSections(this.props.data);
     return (
       <section className="stations">
-        <div className="container-fluid stations-info">
-          <Col sm={10} smOffset={1}>
+        <div className="container-fluid">
+          <Col sm={12}>
 
-            <Row className="section-heading">
-              <Col sm={12}>
-                <h2 className="heading">Manage Stations</h2>
+            <Row className="col-titles">
+              <Col sm={2} className="vert-align-middle custom-st st-20">
+                <span>Station Cover Image</span>
+              </Col>
+              <Col sm={2} className="vert-align-middle custom-st st-20">
+                <span>Station ID</span>
+              </Col>
+              <Col sm={2} className="vert-align-middle custom-st st-20">
+                <span>Station Name</span>
+              </Col>
+              <Col sm={3} className="vert-align-middle custom-st st-27">
+                <span>URL</span>
+              </Col>
+              <Col sm={2} className="vert-align-middle custom-st st-13">
+                <span>Actions</span>
+                  <div>
+                      <Switch value={'some string or integer value'} on={true} onClick={this.toggle}/>
+                  </div>
               </Col>
             </Row>
             {sections}
-            <Row className="section-content addNew">
+            <Row className="section-row addNew">
               <Col sm={12}>
                 <span className="add" onClick={this.addStation}><i className="fa fa-plus"></i> Add an Station</span>
               </Col>
@@ -95,10 +108,8 @@ var Container = React.createClass({
 
 var Section = React.createClass({
   getInitialState: function() {
-    if (this.props.data.station_url === "") {
       return {
-        editing: true,
-        status: 'pending',
+        showModal: false,
         data: {
           station_name: this.props.data.station_name,
           station_title: this.props.data.station_title,
@@ -109,21 +120,12 @@ var Section = React.createClass({
           public_posting: this.props.data.public_posting
         }
       }
-    }else {
-      return {
-        editing: false,
-        status: 'completed',
-        data: {
-          station_name: this.props.data.station_name,
-          station_title: this.props.data.station_title,
-          station_url: this.props.data.station_url,
-          description: this.props.data.description,
-          coverImg: this.props.data.coverImg,
-          privacy: this.props.data.privacy,
-          public_posting: this.props.data.public_posting
-        }
-      }
-    }
+  },
+  onTextSelectChange: function(func, key, val) {
+    console.log('new change', val);
+    this.setState({
+      selectedOption: key
+    })
   },
   toggleContent: function(){
     this.props.toggleOne(this.props.id)
@@ -185,6 +187,13 @@ var Section = React.createClass({
       }
     })
   },
+  detailsModal: function() {
+    console.log('open modal');
+    this.setState({showModal: true});
+  },
+  closeModal:function() {
+    this.setState({ showModal: false });
+  },
   render: function() {
     //console.log('props: ', this.props);
     //console.log('render state is: ', this.state);
@@ -193,149 +202,42 @@ var Section = React.createClass({
     var isOpen = this.getHeight() === "open" ? "" : "hidden";
     //var logoPreview = this.state.logoImgUrl === undefined ? 'hidden' : '';
 
-    if (this.state.editing) {
+    console.log('state is:    ', this.state);
       return (
-        <div className="animated fadeIn">
-          <Row className={"section-content info edit-mode section open " + this.props.id}>
-            <Col sm={2} className="vert-align-middle">
+        <div className="animated fadeIn pre-row">
+          <Row className={"section-row info section " + this.props.id + " " + styleClass}>
+            <Col sm={2} className="vert-align-middle custom-st st-20">
               <img className="img-responsive" src={this.state.data.coverImg} />
             </Col>
-            <Col sm={8} className="vert-align-middle">
-                <span className="affiliate-name">{this.state.data.station_name}</span>
-            </Col>
-            <Col sm={2} className="vert-align-middle text-right">
-              <span className="cancel-btn" onClick={this._cancelEditMode}>Cancel</span>
-            </Col>
-          </Row>
-
-          <Row className={"section-content details edit-mode open animated fadeIn"}>
-          <form>
-            <div className="container-fluid">
-              <Col sm={7}>
-                <div className="img-upload-box">
-                  <DropzoneJs onDrop={this.onAddCoverImg}>
-                    <div className="dropArea">+ Drag file here to upload</div>
-                     <img className={"upload-preview img-responsive "} ref="coverImg" src={this.state.data.coverImg} />
-                  </DropzoneJs>
-                </div>
-
-                <div className="form-group title-row">
-                  <label>Edit Station Name: </label>
-                  <input ref="station_name" defaultValue={this.state.data.station_name} />
-                </div>
-                <div className="form-group title-row">
-                  <label>Edit Station Title: </label>
-                  <input ref="station_title" defaultValue={this.state.data.station_title} />
-                </div>
-                <div className="form-group title-row">
-                  <label>Edit Station Url: </label>
-                  <input ref="station_url" defaultValue={this.state.data.station_url} />
-                </div>
-                <div className="title-row">
-                  <label>Edit Station Description: </label>
-                  <textarea ref="description" defaultValue={this.state.data.description} cols="100" />
-                </div>
-                <div className="title-row">
-                  <label>Privacy: </label>
-                  <Switch size="small" state={this.state.data.privacy} onColor="st-on" offColor="st-off" onText="On" offText="Off" />
-
-                  <span className="info-small">On - You are allowing anyone to view your Station and it's content.</span>
-                  <span className="info-small">Off - Your Station is not viewable to the public.</span>
-                </div>
-                <div className="title-row">
-                  <label>Public Posting: </label>
-                  <Switch size="small" state={this.state.data.public_posting} value={this.state.data.public_posting} onColor="st-on" offColor="st-off" onText="On" offText="Off" ref="publicState" onChange={this.toggleChange} />
-
-                  <span className="info-small">On - You are allowing anyone to publicly post on your Station.</span>
-                  <span className="info-small">Off - Only you as an Admin are allowed to post on your Station.</span>
-                </div>
-              </Col>
-              <Col sm={5}>
-                <div className="title-row users">
-                  <label>Station Admins: </label>
-                  <span className="title">{this.props.data.username}</span>
-                </div>
-                <div className="title-row users">
-                  <label>Station Contributors: </label>
-                  <span className="title">{this.props.data.username}</span>
-                </div>
-                <UsersList />
-              </Col>
-            </div>
-            <div className="container-fluid text-right">
-              <button className="btn btn-st orange" onClick={this._submit}>Save</button>
-            </div>
-          </form>
-        </Row>
-      </div>
-      )
-    } else {
-      return (
-        <div className="animated fadeIn">
-          <Row className={"section-content info section " + this.props.id + " " + styleClass}>
-            <Col sm={2} className="vert-align-middle">
-              <img className="img-responsive" src={this.state.data.coverImg} />
-            </Col>
-            <Col sm={8} className="vert-align-middle">
-              <span className="affiliate-name">{this.state.data.station_name}</span>
+            <Col sm={2} className="vert-align-middle custom-st st-20">
+              <span>{this.state.data.station_title}</span>
               <i className={"fa fa-pencil " + isOpen} onClick={this._enterEditMode}></i>
             </Col>
-            <Col sm={2} className="vert-align-middle text-right">
-              <div className={"icon-trans vert-align-middle " + styleClass} onClick={this.toggleContent}>
-                <i className="fa fa-plus"></i>
-                <i className="fa fa-minus"></i>
+            <Col sm={2} className="vert-align-middle custom-st st-20">
+              <span>{this.state.data.station_name}</span>
+            </Col>
+            <Col sm={3} className="vert-align-middle custom-st st-27">
+              <span>{this.state.data.station_url}</span>
+            </Col>
+            <Col sm={2} className="vert-align-middle custom-st st-13">
+              <div className="icon-trans vert-align-middle ">
+                <i className="zmdi zmdi-forward" onClick={this.detailsModal}></i>
+                <i className="zmdi zmdi-account-add" onClick={this.addUsersModal}></i>
+                <i className="zmdi zmdi-delete"></i>
               </div>
-                <Link to="/stations"><i className="vert-align-middle affiliate-showmore material-icons">keyboard_arrow_right</i></Link>
             </Col>
           </Row>
 
-          <Row className={"section-content details " + styleClassAnimate}>
-            <Col sm={7}>
-              <div className="title-row">
-                <img className="img-responsive" src={this.state.data.coverImg} />
-              </div>
-              <div className="title-row">
-                <label>Station Name: </label>
-                <span className="title">{this.state.data.station_name}</span>
-              </div>
-              <div className="title-row">
-                <label>Station Title: </label>
-                <span className="title">{this.state.data.station_title}</span>
-              </div>
-              <div className="title-row">
-                <label>Station Url: </label>
-                <span className="title">{this.state.data.station_url}</span>
-              </div>
-              <div className="title-row">
-                <label>Station Description: </label>
-                <span className="title">{this.state.data.description}</span>
-              </div>
-              <div className="title-row">
-                <label>Privacy: </label>
-                <Switch size="small" state={this.state.data.privacy} disabled={true} onColor="st-on" offColor="st-off" onText="On" offText="Off" />
+          <Modal className="station stations-modals" show={this.state.showModal} onHide={this.closeModal} details={this.state.details} addUser={this.state.addUser}>
+            <Modal.Header closeButton>
 
-              </div>
-              <div className="title-row">
-                <label>Public Posting: </label>
-                <Switch size="small" state={this.state.data.public_posting} disabled={true} onColor="st-on" offColor="st-off" onText="On" offText="Off" />
-
-              </div>
-            </Col>
-            <Col sm={5}>
-              <div className="title-row users">
-                <label>Station Admins: </label>
-                <span className="title">{this.props.data.username}</span>
-              </div>
-              <div className="title-row users">
-                <label>Station Contributors: </label>
-                <span className="title">{this.props.data.username}</span>
-              </div>
-              <UsersList />
-            </Col>
-          </Row>
+            </Modal.Header>
+            <Modal.Body>
+              <StationsEdit data={this.state.data} />
+            </Modal.Body>
+          </Modal>
         </div>
       );
-    }
   },
   _updateHandler: function(data) {
     var state = this.state;

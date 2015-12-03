@@ -2,52 +2,6 @@ section.users {
   .container-fluid:first-child {
     padding-top: 25px;
   }
-
-  .row {
-    &.col-titles {
-      margin-bottom: 10px;
-
-      span {
-        color: #929292;
-        font-size: 12px;
-      }
-    }
-  }
-
-  .pre-row {
-
-    &:hover {
-      .section-row {
-        background-color: #f6f6f6;
-      }
-    }
-
-    .section-row {
-      background-color: #fff;
-      color: lighten($darkgrey-text, 25%);
-      padding: 25px 0;
-      border: 1px solid #c3c3c3;
-      margin-top: -1px;
-      -webkit-transition: all .15s linear;
-      -moz-transition: all .15s linear;
-      -o-transition: all .15s linear;
-
-      .icon-trans {
-        .zmdi {
-          font-size: 16px;
-          margin: 0 10px;
-          -webkit-transition: all .15s linear;
-          -moz-transition: all .15s linear;
-          -o-transition: all .15s linear;
-
-          &:hover {
-            color: $orange;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
 }
 
 .modal.user-modals {
@@ -81,7 +35,6 @@ section.users {
         height: 30px;
         line-height: 11px;
         border-radius: 50%;
-        padding: 5px;
         color: #bcbcbc;
         opacity: 1;
 
