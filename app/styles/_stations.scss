@@ -23,6 +23,7 @@ section.stations {
       border: 0;
       border-bottom: 1px solid #929292;
       padding-bottom: 5px;
+      color: #929292;
       -webkit-transition: all .25s linear;
       -moz-transition: all .25s linear;
       -o-transition: all .25s linear;
@@ -40,6 +41,10 @@ section.stations {
       height: 100px;
       border-color: #929292;
       padding: 5px 10px;
+    }
+
+    .react-textselect {
+      color: #929292;
     }
 
     .stations-coverImg {
@@ -111,6 +116,16 @@ section.stations {
             }
           }
         }
+
+        .disabled.toggle {
+          background-color: transparent;
+          width: 90%;
+          height: 100%;
+          display: block;
+          position: absolute;
+          z-index: 1;
+          padding: 20px;
+        }
       }
     }
 
@@ -118,6 +133,25 @@ section.stations {
       .btn {
         &:first-child {
           margin-right: 15px;
+        }
+
+        &.btn-st {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .greyed-out {
+
+      .react-toggle {
+        .react-toggle-track {
+          border-color: #bcbcbc;
+          background-color: #bcbcbc;
+        }
+
+        .react-toggle-thumb {
+          border-color: #929292;
+          background-color: #929292;
         }
       }
     }

@@ -16,7 +16,6 @@ import Users                       from './components/Users';
 import Affiliates                  from './components/Affiliates';
 import Stations                    from './components/Stations';
 import UsersList                   from './components/UsersList';
-import ToggleSwitch                from './components/ToggleSwitch';
 
 export default (
   <Router history={CreateBrowserHistory()}>
@@ -34,7 +33,6 @@ export default (
       <Route path="/affiliates" component={Affiliates} />
       <Route path="/stations" component={Stations} />
       <Route path="/userslist" component={UsersList} />
-      <Route path="/toggle" component={ToggleSwitch} />
 
       <Route path="*" component={NotFoundPage} />
 

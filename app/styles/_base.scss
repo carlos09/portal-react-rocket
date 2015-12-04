@@ -232,6 +232,7 @@ body {
   }
 }
 
+/* Modal */
 .modal.station {
   .modal-dialog {
     width: 85%;
@@ -257,6 +258,7 @@ body {
   }
 }
 
+/* Custom Col Widths */
 &.custom-st {
   &.st-11 {
     width: 11.66666667%;
@@ -276,6 +278,66 @@ body {
 
   &.st-27 {
     width: 27%;
+  }
+}
+
+/* Toggle Switches */
+.react-toggle {
+  vertical-align: middle;
+  margin: 0 10px;
+
+  &:hover {
+
+    .react-toggle-track {
+      background-color: rgba(#fb8c00, .6) !important;
+      border-color: rgba(#fb8c00, .6) !important;
+    }
+  }
+
+  &:active {
+    .react-toggle-thumb {
+      box-shadow: none !important;
+    }
+  }
+
+  &.react-toggle--focus {
+     .react-toggle-thumb {
+      box-shadow: none;
+    }
+  }
+
+  &.react-toggle--checked {
+    .react-toggle-track {
+      background-color: rgba(#fb8c00, .5);
+      border-color: rgba(#fb8c00, .5);
+    }
+    .react-toggle-thumb {
+      border-color: #fb8c00;
+    }
+  }
+
+  .react-toggle-track {
+    width: 48px;
+    height: 15px;
+    background-color: rgba(#fb8c00, .5);
+    border-color: rgba(#fb8c00, .5);
+
+    .react-toggle-track-check,
+    .react-toggle-track-x {
+      display: none;
+    }
+  }
+
+  .react-toggle-thumb {
+    left: 1px;
+    top: -4px;
+    background-color: #ff3d00;
+    border-color: #ff3d00;
+
+    &:focus {
+      outline: 0;
+      border: none;
+    }
   }
 }
 

@@ -7,7 +7,6 @@ import StationsActions      from '../actions/StationsActions';
 import StationsStore        from '../stores/StationsStore';
 import StationsEdit         from './Stations/StationsEdit';
 var TextSelect = require('react-textselect');
-import Switch from 'react-toggle-switch';
 
 function getState(){
    return {
@@ -62,10 +61,6 @@ var Container = React.createClass({
     this.buildSections(newProps);
     this.forceUpdate();
   },
-  toggle: function(value) {
-    // do something with value
-    console.log('some toggle');
-  },
   render: function() {
     var sections = this.buildSections(this.props.data);
     return (
@@ -88,9 +83,7 @@ var Container = React.createClass({
               </Col>
               <Col sm={2} className="vert-align-middle custom-st st-13">
                 <span>Actions</span>
-                  <div>
-                      <Switch value={'some string or integer value'} on={true} onClick={this.toggle}/>
-                  </div>
+
               </Col>
             </Row>
             {sections}
