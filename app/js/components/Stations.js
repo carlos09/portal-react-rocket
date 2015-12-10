@@ -17,7 +17,7 @@ function getState(){
 var Container = React.createClass({
     mixins: [StationsStore.mixin],
   getInitialState: function(sectionList){
-    console.log('props are: ', this.props);
+        console.log('props are: ', this.props);
     return {
       openSectionIndex: -1,
       status: null,
@@ -63,6 +63,7 @@ var Container = React.createClass({
   },
   render: function() {
     var sections = this.buildSections(this.props.data);
+
     return (
       <section className="stations">
         <div className="container-fluid">
@@ -90,12 +91,19 @@ var Container = React.createClass({
             <Row className="section-row addNew">
               <Col sm={12}>
                 <span className="add" onClick={this.addStation}><i className="fa fa-plus"></i> Add an Station</span>
+                <addStationBtn />
               </Col>
             </Row>
           </Col>
         </div>
       </section>
     );
+  }
+});
+
+var addStationBtn = React.createClass({
+  render: function() {
+    return <div>Test</div>
   }
 });
 

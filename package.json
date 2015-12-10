@@ -53,10 +53,14 @@
     "watchify": "^3.2.x"
   },
   "dependencies": {
+    "grommet": "0.4.0",
     "joi": "^7.0.0",
     "joi-validation-strategy": "^0.3.2",
     "lodash": "^3.10.1",
     "react": "^0.14.3",
+    "react-chartist": "^0.10.1",
+    "react-chartjs": "^0.6.0",
+    "react-day-picker": "^1.2.0",
     "react-dom": "^0.14.3",
     "react-dropzone": "^3.0.0",
     "react-formal": "^0.15.1",
