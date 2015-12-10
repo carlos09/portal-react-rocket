@@ -2,7 +2,7 @@
 
 import React              from 'react/addons';
 import {ListenerMixin}    from 'reflux';
-
+import Header             from './components/Header';
 import CurrentUserActions from './actions/CurrentUserActions';
 import CurrentUserStore   from './stores/CurrentUserStore';
 import Sidebar             from './components/Sidebar';
@@ -19,6 +19,15 @@ const styles = {
   content: {
     padding: '16px',
   },
+};
+
+const propTypes = {
+  params: React.PropTypes.object,
+  query: React.PropTypes.object,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.object
+  ])
 };
 
 const App = React.createClass({
@@ -74,7 +83,8 @@ const App = React.createClass({
       onSetOpen: this.onSetOpen,
     };
 
-    console.log('this.state ', this.props);
+    var headerTitle = this.props.children.props.route.component.displayName;
+    
     if( this.props.children.props.route.path === '/login') {
       return (
           <MaterialTitlePanel title={contentHeader}>
@@ -85,6 +95,7 @@ const App = React.createClass({
       return (
         <Sidebar {...sidebarProps}>
           <MaterialTitlePanel title={contentHeader}>
+            <Header title={headerTitle} />
             {this.renderChildren()}
           </MaterialTitlePanel>
         </Sidebar>

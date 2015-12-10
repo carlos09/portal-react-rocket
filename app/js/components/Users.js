@@ -34,14 +34,7 @@ var Container = React.createClass({
       var openStatus = (index === this.state.openSectionIndex);
       var addStatus = this.state.status;
 
-      return <Section key={index} id={index} data={section} toggleOne={this.toggleOne} open={openStatus} />
-  },
-  toggleOne: function(id){
-    if(this.state.openSectionIndex === id){
-      this.setState({openSectionIndex: -1});
-    } else {
-      this.setState({openSectionIndex: id});
-    }
+      return <Section key={index} id={index} data={section} />
   },
   addUser: function() {
     var newIndex = this.props.data.length + 1;
@@ -102,8 +95,6 @@ var Section = React.createClass({
     console.log('new props', this.props);
 
     return {
-      editing: false,
-      status: 'completed',
       showModal: false,
       view: null,
       data: {
@@ -116,24 +107,6 @@ var Section = React.createClass({
         company: this.props.data.company
       }
     }
-  },
-  toggleContent: function(){
-    this.props.toggleOne(this.props.id)
-  },
-  getHeight: function(){
-    if(this.props.open){
-      return "open"
-    } else {
-      return "hidden"
-    }
-  },
-  _enterEditMode: function(event) {
-    event.preventDefault();
-    this.setState({editing: true, status: 'pending'});
-  },
-  _cancelEditMode: function(event) {
-    event.preventDefault();
-    this.setState({editing: false, status: 'completed'});
   },
   _submit: function(event) {
     event.preventDefault();
@@ -160,13 +133,9 @@ var Section = React.createClass({
     this.setState({ showModal: false });
   },
   render: function() {
-    var styleClass = this.getHeight() === "open" ? " open" : "";
-    var styleClassAnimate = this.getHeight() === 'open' ? 'open animated fadeIn' : 'hidden';
-    var isOpen = this.getHeight() === "open" ? "" : "hidden";
-
       return (
         <div className="animated fadeIn pre-row">
-          <Row className={"section-row " + this.props.id + " " + styleClass}>
+          <Row className={"section-row " + this.props.id}>
             <Col sm={1} className="vert-align-middle">
               <span>{this.state.data.userid}</span>
             </Col>
@@ -191,7 +160,7 @@ var Section = React.createClass({
             </Col>
           </Row>
 
-          <Modal className="user-modals" show={this.state.showModal} onHide={this.closeModal} details={this.state.details} addUser={this.state.addUser}>
+          <Modal className="station user-modals" show={this.state.showModal} onHide={this.closeModal} details={this.state.details} addUser={this.state.addUser}>
           <Modal.Header closeButton>
             <Row className="column-titles">
               <Col sm={2} className="vert-align-middle custom-st st-11">

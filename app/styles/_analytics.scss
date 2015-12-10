@@ -1,0 +1,118 @@
+section.analytics {
+  padding: 30px 15px;
+
+  .monthly-stats {
+    margin-bottom: 30px;
+
+    .stat-box {
+      background-color: #000;
+      padding: 30px 20px 25px;
+      color: #fff;
+      position: relative;
+
+      h3 {
+        font-size: 32px;
+        font-weight: 400;
+      }
+
+      .desc {
+        font-size: 12px;
+        color: #929292;
+        font-weight: 400;
+        text-transform: uppercase;
+        margin-top: 8px;
+      }
+
+      i.zmdi {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        color: lighten($darkgrey, 15%);
+      }
+    }
+  }
+
+  .st-chart {
+    background-color: #fff;
+    padding: 20px;
+
+    .chart-canvas {
+      margin-top: 15px;
+
+      canvas {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+
+    h2 {
+      font-size: 22px;
+      line-height: 1.5;
+      font-weight: 300;
+      color: #929292;
+    }
+
+    p {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #929292;
+    }
+
+    .calendar-view {
+      .zmdi-calendar {
+        font-size: 16px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+    }
+
+    .date-range {
+      position: absolute;
+      background-color: rgba(255,255,255, .9);
+      padding: 5px;
+      right: 10%;
+      border: 1px solid #f5f5f5;
+      border-radius: 4px;
+      z-index: 1;
+
+      &:focus {
+        outline: 0;
+      }
+
+      .DayPicker-Day--outside {
+        background-color: #f6f6f6;
+      }
+
+      .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+        background-color: $orange;
+      }
+
+      .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus {
+        outline: 0;
+      }
+    }
+
+    .date-selected {
+      color: $orange;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+
+      .bgProgress {
+          display: inline-block;
+          background-color: #d2d2d2;
+          width: 86%;
+          height: 3px;
+          vertical-align: middle;
+      }
+    }
+  }
+
+  .st-chart-stats {
+    padding: 20px 0;
+    margin-top: 20px;
+  }
+}
