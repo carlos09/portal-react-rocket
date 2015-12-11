@@ -90,7 +90,7 @@ var Container = React.createClass({
             {sections}
             <Row className="section-row addNew">
               <Col sm={12}>
-                <span className="add" onClick={this.addStation}><i className="fa fa-plus"></i> Add an Station</span>
+                <span className="add" onClick={this.addStation}><i className="zmdi zmdi-plus"></i> Add a Station</span>
                 <addStationBtn />
               </Col>
             </Row>

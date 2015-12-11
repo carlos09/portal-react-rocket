@@ -22,7 +22,7 @@ body {
     padding-top: 0px;
 
     .profile-welcome {
-      background-color: $darkgrey-hover;
+      background-color: lighten($darkgrey, 3%);
       padding: 20px 0 20px;
 
       .st-logo {
@@ -31,9 +31,9 @@ body {
 
       .avatar {
         background-color: #66adac;
-        height: 80px;
-        width: 80px;
-        border-radius: 50px;
+        height: 100px;
+        width: 100px;
+        border-radius: 4px;
         margin: 15px auto;
       }
 
@@ -67,7 +67,7 @@ body {
           position: absolute;
           left: 0;
           width: 5px;
-          height: 79px;
+          height: 55px;
           visibility: hidden;
           -webkit-transition: all .15s linear;
           -moz-transition: all .15s linear;
@@ -75,7 +75,7 @@ body {
         }
 
         &:hover {
-          background-color: $darkgrey-hover;
+          background-color: lighten($darkgrey, 3%);
           -webkit-transition: all .15s linear;
           -moz-transition: all .15s linear;
           -o-transition: all .15s linear;
@@ -92,7 +92,7 @@ body {
           font-weight: 300;
           font-size: 16px;
           letter-spacing: 1px;
-          padding: 25px 0;
+          padding: 15px 0 15px 20px;
           display: block;
           position: relative;
           transition: all .15s linear;
@@ -111,6 +111,10 @@ body {
 
           i {
             margin-bottom: 5px;
+            text-align: center;
+            width: 35px;
+            font-size: 18px;
+            line-height: 20px;
             transition: all .15s linear;
             -webkit-transition: all .15s linear;
             -moz-transition: all .15s linear;
@@ -169,7 +173,7 @@ body {
           background-color: #fff;
           color: lighten($darkgrey-text, 25%);
           padding: 25px 0;
-          border: 1px solid #c3c3c3;
+          border: 1px solid #d9d9d9;
           margin-top: -1px;
           -webkit-transition: all .15s linear;
           -moz-transition: all .15s linear;
@@ -189,6 +193,20 @@ body {
               }
             }
           }
+        }
+      }
+    }
+
+    .addNew {
+      margin-top: 10px;
+
+      .add {
+        color: #929292;
+        font-size: 16px;
+        cursor: pointer;
+
+        i {
+          color: $orange;
         }
       }
     }
