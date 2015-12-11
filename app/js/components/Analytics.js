@@ -11,7 +11,22 @@ import DocumentTitle from 'react-document-title';
 
 
 /** Controller View */
-const Analytics = React.createClass({
+const Dashboard = React.createClass({
+  componentDidMount: function() {
+    console.log('mounted');
+    $.ajax({
+      method: "GET",
+      url: "https://reportsapi.zoho.com/api/carlos.esquer@stationlocal.com/Database1/Reports?ZOHO_ACTION=EXPORT&ZOHO_OUTPUT_FORMAT=JSON&authtoken=d12551fd94f3fae018bec526f9ae04c0&ZOHO_API_VERSION=1.0",
+      success: function(){
+        console.log('data is: ', response);
+
+      },
+      error: function(data) {
+        console.log('There was an error with the request.', data);
+      }
+    });
+
+  },
   render: function() {
     var hideBtn = false;
     return (
@@ -77,4 +92,4 @@ const Analytics = React.createClass({
 });
 
 
-export default Analytics;
+export default Dashboard;
