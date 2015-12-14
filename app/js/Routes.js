@@ -9,19 +9,18 @@ import HomePage                    from './pages/HomePage';
 import SearchPage                  from './pages/SearchPage';
 import NotFoundPage                from './pages/NotFoundPage';
 import Payments                    from './components/Payments';
-import Dashboard                   from './components/Dashboard';
 import Assets                      from './components/Assets';
 import Login                       from './components/Login';
 import Users                       from './components/Users';
 import Affiliates                  from './components/Affiliates';
 import Stations                    from './components/Stations';
-import Analytics                   from './components/Analytics';
+import Dashboard                   from './components/Analytics';
 
 export default (
   <Router history={CreateBrowserHistory()}>
     <Route path="/" component={App}>
 
-      <IndexRoute component={HomePage} />
+      <IndexRoute component={Dashboard} />
 
       <Route path="/" component={HomePage} />
       <Route path="/search" component={SearchPage} />
@@ -32,7 +31,7 @@ export default (
       <Route path="/users" component={Users} />
       <Route path="/affiliates" component={Affiliates} />
       <Route path="/stations" component={Stations} />
-      <Route path="/analytics" component={Analytics} />
+      <Route path="/analytics" component={Dashboard} />
 
       <Route path="*" component={NotFoundPage} />
 

@@ -33,9 +33,51 @@ section.analytics {
     }
   }
 
+  .date-range-container {
+    background-color: #fff;
+    padding: 10px 20px;
+    margin: 0 0 30px;
+    font-size: 18px;
+    color: #929292;
+    font-weight: 400;
+    border: 1px solid #d9d9d9;
+
+    .react-textselect {
+      border: 0;
+
+      .react-textselect-input {
+        cursor: pointer;
+      }
+    }
+
+    .date-range {
+      position: absolute;
+      z-index: 1;
+      background-color: rgba(255,255,255,1);
+      padding: 10px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      top: 51px;
+    }
+
+    .dates {
+      cursor: pointer;
+    }
+
+    .btn.btn-st {
+      font-size: 14px;
+      padding: 5px 15px;
+      text-align: center;
+      display: block;
+      margin: 0 auto;
+      border: 0;
+    }
+  }
+
   .st-chart {
     background-color: #fff;
     padding: 20px;
+    border: 1px solid #d9d9d9;
 
     .chart-canvas {
       margin-top: 15px;
@@ -112,7 +154,11 @@ section.analytics {
   }
 
   .st-chart-stats {
-    padding: 20px 0;
-    margin-top: 20px;
+    padding: 0;
+    margin-top: 0px;
+
+    section.stations {
+      padding: 30px 0;
+    }
   }
 }

@@ -4,51 +4,21 @@ import { Grid, Row, Col, Form, Modal } from 'react-bootstrap';
 import {Link}        from 'react-router';
 import {Chart}       from 'chart.js';
 var LineChart = require("react-chartjs").Line;
-import moment from "moment";
-import DayPicker, { DateUtils } from "react-day-picker";
+
 
 
 
 var StLineChart = React.createClass({
   getInitialState: function() {
     return {
-      from: null,
-      to: null,
+
       calendar: false,
       legend: null
     }
   },
-  componentDidMount: function () {
-    var legend = this.refs.linechart.getChart();
-
-    console.log('line: ', legend);
-
-    this.setState({
-      legend: legend
-    });
-  },
-  handleDayClick: function(e, day) {
-    const range = DateUtils.addDayToRange(day, this.state);
-    this.setState(range);
-  },
-  handleResetClick: function(e) {
-    e.preventDefault();
-    this.setState({
-      from: null,
-      to: null
-    });
-  },
-  toggleCalendar: function() {
-    var state = !this.state.calendar;
-    this.setState({ calendar: state })
-  },
   render: function() {
-    const { from, to } = this.state;
 
-    const modifiers = {
-      selected: day => DateUtils.isDayInRange(day, this.state)
-    };
-    console.log('new state is: ', this.state);
+    //console.log('new state is: ', this.state);
 
     var chartData = {
       labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -128,8 +98,7 @@ var StLineChart = React.createClass({
   };
 
 
-  console.log('show state: ', this.state);
-  var calendarShow = this.state.calendar ? "" : " hidden";
+  //console.log('show state: ', this.state);
 
     return (
       <div>
@@ -138,26 +107,6 @@ var StLineChart = React.createClass({
             <h2>Station Name Impressions</h2>
           </Col>
           <Col sm={6} className="vert-align-bottom">
-            <div className="calendar-view text-right">
-              { !from && !to && <p>View impressions from <i className="zmdi zmdi-calendar" onClick={this.toggleCalendar}></i> to <i className="zmdi zmdi-calendar" onClick={this.toggleCalendar}></i>.</p> }
-              { from && !to && <p>View impressions from <strong>{
-                  moment(from).format("L") }</strong> to <i className="zmdi zmdi-calendar" onClick={this.toggleCalendar}></i>.</p> }
-              { from && to &&
-                <p>View impressions from <strong  onClick={this.toggleCalendar}>{
-                    moment(from).format("L") }</strong> to <strong  onClick={this.toggleCalendar}>{
-                    moment(to).format("L") }</strong>. <a
-                    href="#" onClick={ this.handleResetClick.bind(this) }>Reset</a>
-                </p>
-              }
-              <div className={"date-range" + calendarShow }>
-                <DayPicker
-                  ref="daypicker"
-                  numberOfMonths={ 1 }
-                  modifiers={ modifiers }
-                  onDayClick={ this.handleDayClick.bind(this) }
-                />
-              </div>
-            </div>
           </Col>
         </Row>
         <Row>

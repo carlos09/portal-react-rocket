@@ -40,16 +40,14 @@ const SidebarContent = (props) => {
     <MaterialTitlePanel style={style}>
       <div id="sidebar">
           <div className="text-center profile-welcome">
-            <Link to="/"><img className="st-logo" src="/images/logos/station-logo.png" /></Link>
-              <div className="avatar"></div>
-
-              <div className="welcome">Hello, Private Label</div>
-            </div>
-            <div className="text-center">
+            <Link to="/"><div className="avatar"></div></Link>
+          </div>
+          <div className="">
             <ul id="nav-list">
-              <li><Link to="/affiliates"><i className="material-icons md-24">account_box</i> Affiliates</Link></li>
-              <li><Link to="/stations"><i className="material-icons md-24">wifi_tethering</i> Stations</Link></li>
-              <li><Link to="/users"><i className="material-icons md-24">people</i> Users</Link></li>
+              <li><Link to="/"><i className="zmdi zmdi-view-dashboard"></i> Dashboard</Link></li>
+              <li><Link to="/affiliates"><i className="zmdi zmdi-account-box"></i> Affiliates</Link></li>
+              <li><Link to="/stations"><i className="zmdi zmdi-portable-wifi"></i> Stations</Link></li>
+              <li><Link to="/users"><i className="zmdi zmdi-accounts"></i> Users</Link></li>
               <li><Link to="/login"><i className="material-icons md-24">keyboard_tab</i> Login</Link></li>
             </ul>
           </div>

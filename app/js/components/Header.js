@@ -7,7 +7,6 @@ import { Grid, Row, Col, Form, Modal } from 'react-bootstrap';
 const Header = React.createClass({
 
   render(title) {
-    console.log('header title ', this.props);
     return (
       <header>
         <div className="container-fluid">

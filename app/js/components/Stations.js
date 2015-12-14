@@ -17,7 +17,6 @@ function getState(){
 var Container = React.createClass({
     mixins: [StationsStore.mixin],
   getInitialState: function(sectionList){
-        console.log('props are: ', this.props);
     return {
       openSectionIndex: -1,
       status: null,
@@ -90,7 +89,7 @@ var Container = React.createClass({
             {sections}
             <Row className="section-row addNew">
               <Col sm={12}>
-                <span className="add" onClick={this.addStation}><i className="fa fa-plus"></i> Add an Station</span>
+                <span className="add" onClick={this.addStation}><i className="zmdi zmdi-plus"></i> Add a Station</span>
                 <addStationBtn />
               </Col>
             </Row>
@@ -123,7 +122,6 @@ var Section = React.createClass({
       }
   },
   onTextSelectChange: function(func, key, val) {
-    console.log('new change', val);
     this.setState({
       selectedOption: key
     })
@@ -168,7 +166,6 @@ var Section = React.createClass({
     this.setState({editing: false, status: 'completed'});
   },
   onDrop(files) {
-    console.log('Received files: ', files);
   },
   onAddCoverImg: function(res){
     var newFile = {
@@ -203,7 +200,6 @@ var Section = React.createClass({
     var isOpen = this.getHeight() === "open" ? "" : "hidden";
     //var logoPreview = this.state.logoImgUrl === undefined ? 'hidden' : '';
 
-    console.log('state is:    ', this.state);
       return (
         <div className="animated fadeIn pre-row">
           <Row className={"section-row info section " + this.props.id + " " + styleClass}>
