@@ -1,6 +1,6 @@
 'use strict';
 
-import React         from 'react/addons';
+import React         from 'react';
 import McFly from 'McFly';
 import AffiliatesActions      from '../actions/AffiliatesActions';
 

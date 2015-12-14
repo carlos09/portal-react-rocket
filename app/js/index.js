@@ -1,6 +1,6 @@
 'use strict';
 
-import React  from 'react/addons';
+import React  from 'react';
 import ReactDOM         from 'react-dom';
 import Routes from './Routes';
 import Bootstrap from 'react-bootstrap';

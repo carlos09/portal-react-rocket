@@ -1,6 +1,6 @@
 'use strict';
 
-import React            from 'react/addons';
+import React            from 'react';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 
 var SVG = React.createFactory(require('react-svg'));
