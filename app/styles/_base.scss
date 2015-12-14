@@ -109,6 +109,10 @@ body {
             }
           }
 
+          &:active {
+            background-color: lighten($darkgrey, 3%);
+          }
+
           i {
             margin-bottom: 5px;
             text-align: center;
@@ -162,9 +166,10 @@ body {
     }
 
     .pre-row {
+
       &:hover {
-        .section-row {
-          background-color: #f6f6f6;
+        .row.section-row {
+          background-color: #f6f6f6
         }
       }
 

@@ -20,6 +20,7 @@ var Container = React.createClass({
     return {
       openSectionIndex: -1,
       status: null,
+      showAddBtn: true,
       data: {
         station_name: '',
         station_title: '',
@@ -55,13 +56,18 @@ var Container = React.createClass({
     StationsActions.addStation(data);
   },
   storeDidChange: function() {
-    console.log('change!');
     var newProps = this.props.data;
     this.buildSections(newProps);
     this.forceUpdate();
   },
   render: function() {
     var sections = this.buildSections(this.props.data);
+
+    if (this.props.showAddBtn === false) {
+      var showAddBtn = false;
+    } else {
+      var showAddBtn = true;
+    }
 
     return (
       <section className="stations">
@@ -87,12 +93,14 @@ var Container = React.createClass({
               </Col>
             </Row>
             {sections}
+            {showAddBtn !== false ?
             <Row className="section-row addNew">
               <Col sm={12}>
                 <span className="add" onClick={this.addStation}><i className="zmdi zmdi-plus"></i> Add a Station</span>
                 <addStationBtn />
               </Col>
             </Row>
+            : null}
           </Col>
         </div>
       </section>
@@ -256,7 +264,7 @@ var Stations = React.createClass({
     return getState();
   },
   render: function() {
-    return <Container data={this.state.list} />;
+    return <Container data={this.state.list} showAddBtn={this.props.showAddBtn}/>;
   }
 });
 

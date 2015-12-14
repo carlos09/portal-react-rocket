@@ -30,15 +30,7 @@ const Dashboard = React.createClass({
     this.setState(range);
   },
 
-  handleResetClick: function(e) {
-    e.preventDefault();
-    this.setState({
-      from: null,
-      to: null
-    });
-  },
   onTextSelectChange: function(func, key, val) {
-    console.log('new change', val);
     this.setState({
       selectedOption: key
     })
@@ -89,23 +81,6 @@ const Dashboard = React.createClass({
     var state = !this.state.calendar;
     this.setState({ calendar: state })
   },
-  componentDidMount: function() {
-    // var currentDay = moment().format('YYYY, MM, DD');
-    // var TenDays = moment().subtract(10, 'days').format('YYYY, MM, DD');
-    //
-    // this.setState({
-    //   from: new Date(TenDays),
-    //   to: new Date(currentDay)
-    // })
-    //
-    // console.log('today is: ' + currentDay + ' 10 days ago was: ' + TenDays);
-
-    // this.setDateRange();
-
-  },
-  handleDropDown: function(val) {
-    console.log('val is: ', val);
-  },
   render: function() {
     var hideBtn = false;
     var calendarShow = this.state.calendar ? "" : " hidden";
@@ -116,10 +91,7 @@ const Dashboard = React.createClass({
       selected: day => DateUtils.isDayInRange(day, this.state)
     };
 
-    console.log('this state', this.state);
-    console.log('options should be: ', this.state.selectedOption);
-
-    var inlineStyle= {display: 'inline'}
+    var inlineStyle = {display: 'inline'}
 
     return (
       <DocumentTitle title="Dashboard">
