@@ -1,6 +1,6 @@
 'use strict';
 
-import React              from 'react/addons';
+import React              from 'react';
 import {ListenerMixin}    from 'reflux';
 import Header             from './components/Header';
 import CurrentUserActions from './actions/CurrentUserActions';
@@ -84,7 +84,7 @@ const App = React.createClass({
     };
 
     var headerTitle = this.props.children.props.route.component.displayName;
-    
+
     if( this.props.children.props.route.path === '/login') {
       return (
           <MaterialTitlePanel title={contentHeader}>

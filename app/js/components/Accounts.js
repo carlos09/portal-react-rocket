@@ -1,4 +1,4 @@
-import React         from 'react/addons';
+import React         from 'react';
 import { Grid, Row, Col, Form } from 'react-bootstrap';
 
 const Accounts = React.createClass ({
