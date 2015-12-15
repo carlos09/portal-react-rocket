@@ -92,8 +92,6 @@ var Container = React.createClass({
 
 var Section = React.createClass({
   getInitialState: function() {
-    console.log('new props', this.props);
-
     return {
       showModal: false,
       view: null,
